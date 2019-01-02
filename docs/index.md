@@ -9,7 +9,7 @@ redirect_from:
 # Installation
 
 ```shell
-docker run -d -p 8999:80 --name arcus-event-grid-sidecar arcusazure/azure-event-grid-sidecar
+docker run -d -p 8999:80 --name arcus arcusazure/azure-event-grid-sidecar
 ```
 
 # Features
