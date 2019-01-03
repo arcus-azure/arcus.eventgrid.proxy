@@ -26,8 +26,10 @@ Docker image is available on [Docker Hub](https://hub.docker.com/r/arcusazure/az
 - Monitor runtime with a health endpoint ([docs](operations/health))
 
 # Documentation
+- **Deployment**
+    - [Image Tagging Strategy](deploy/tagging-strategy)
 - **Configuration**
-    - [Runtime](config#runtime)
+    - [Runtime](config#runtime)    
 
 # License
 This is licensed under The MIT License (MIT). Which means that you can use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the web application. But you always need to state that Codit is the original author of this web application.
