@@ -42,7 +42,6 @@ namespace Arcus.EventGrid.Sidecar.Api
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
             app.UseMvc();
             app.UseOpenApiDocsWithExplorer();
         }
