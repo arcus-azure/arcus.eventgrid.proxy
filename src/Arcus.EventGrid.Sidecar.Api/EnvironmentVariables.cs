@@ -9,8 +9,11 @@ namespace Arcus.EventGrid.Sidecar.Api
     {
         public class Runtime
         {
-            public const string HttpPort = "ARCUS_HTTP_PORT";
-            public const string HttpsPort = "ARCUS_HTTP_PORTS";
+            public class Ports
+            {
+                public const string Http = "ARCUS_HTTP_PORT";
+                public const string Https = "ARCUS_HTTPS_PORT";
+            }
         }
     }
 }

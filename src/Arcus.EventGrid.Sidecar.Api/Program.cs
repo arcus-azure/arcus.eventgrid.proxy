@@ -29,8 +29,8 @@ namespace Arcus.EventGrid.Sidecar.Api
 
         public static IWebHost BuildWebHost(string[] args)
         {
-            var httpPort = GetConfiguredPortOrDefault(EnvironmentVariables.Runtime.HttpPort, 80);
-            var httpsPort = GetConfiguredPortOrDefault(EnvironmentVariables.Runtime.HttpsPort, 443);
+            var httpPort = GetConfiguredPortOrDefault(EnvironmentVariables.Runtime.Ports.Http, 80);
+            var httpsPort = GetConfiguredPortOrDefault(EnvironmentVariables.Runtime.Ports.Https, 443);
             var httpEndpointUrl = $"http://+:{httpPort}";
             var httpsEndpointUrl = $"https://+:{httpsPort}";
 
