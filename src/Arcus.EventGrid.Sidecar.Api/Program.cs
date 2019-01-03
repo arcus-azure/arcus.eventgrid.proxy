@@ -29,30 +29,28 @@ namespace Arcus.EventGrid.Sidecar.Api
 
         public static IWebHost BuildWebHost(string[] args)
         {
-            var httpPort = GetConfiguredPortOrDefault(EnvironmentVariables.Runtime.Ports.Http, 80);
-            var httpsPort = GetConfiguredPortOrDefault(EnvironmentVariables.Runtime.Ports.Https, 443);
+            var httpPort = DetermineHttpPort();
             var httpEndpointUrl = $"http://+:{httpPort}";
-            var httpsEndpointUrl = $"https://+:{httpsPort}";
 
             return WebHost.CreateDefaultBuilder(args)
                 .UseKestrel(kestrelServerOptions =>
                 {
                     kestrelServerOptions.AddServerHeader = false;
                 })
-                .UseUrls(httpEndpointUrl, httpsEndpointUrl)
+                .UseUrls(httpEndpointUrl)
                 .UseStartup<Startup>()
                 .Build();
         }
 
-        private static int GetConfiguredPortOrDefault(string environmentVariableName, int defaultPort)
+        private static int DetermineHttpPort()
         {
-            var rawConfiguredHttpPort = Environment.GetEnvironmentVariable(environmentVariableName);
+            var rawConfiguredHttpPort = Environment.GetEnvironmentVariable(EnvironmentVariables.Runtime.Ports.Http);
             if (int.TryParse(rawConfiguredHttpPort, out int configuredHttpPort))
             {
                 return configuredHttpPort;
             }
 
-            return defaultPort;
+            return 80;
         }
     }
 }

@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  arcus.eventgrid.sidecar.api:
+    image: arcusazure/azure-event-grid-sidecar
+    build:
+      context: .
+      dockerfile: Arcus.EventGrid.Sidecar.Api/Dockerfile
