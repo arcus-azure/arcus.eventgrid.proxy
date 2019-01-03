@@ -14,7 +14,7 @@ namespace Arcus.EventGrid.Sidecar.Api.Controllers.v1
         /// <remarks>Provides an indication about the health of the runtime</remarks>
         [HttpGet]
         [SwaggerOperation(OperationId = "Health_Get")]
-        [SwaggerResponse((int) HttpStatusCode.OK, Description = "Runtime is healthy")]
+        [SwaggerResponse((int) HttpStatusCode.OK, Description = "Runtime is up and running in a healthy state")]
         [SwaggerResponse((int) HttpStatusCode.ServiceUnavailable, Description = "Runtime is not healthy")]
         public IActionResult Get()
         {
