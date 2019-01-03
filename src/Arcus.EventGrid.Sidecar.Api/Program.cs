@@ -18,8 +18,7 @@ namespace Arcus.EventGrid.Sidecar.Api
         {
             Welcome();
 
-            CreateWebHostBuilder(args)
-                .Build()
+            BuildWebHost(args)
                 .Run();
         }
 
@@ -28,8 +27,30 @@ namespace Arcus.EventGrid.Sidecar.Api
             Console.WriteLine(WelcomeText);
         }
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+        public static IWebHost BuildWebHost(string[] args)
+        {
+            var httpPort = DetermineHttpPort();
+            var httpEndpointUrl = $"http://+:{httpPort}";
+
+            return WebHost.CreateDefaultBuilder(args)
+                .UseKestrel(kestrelServerOptions =>
+                {
+                    kestrelServerOptions.AddServerHeader = false;
+                })
+                .UseUrls(httpEndpointUrl)
+                .UseStartup<Startup>()
+                .Build();
+        }
+
+        private static int DetermineHttpPort()
+        {
+            var rawConfiguredHttpPort = Environment.GetEnvironmentVariable(EnvironmentVariables.Runtime.Ports.Http);
+            if (int.TryParse(rawConfiguredHttpPort, out int configuredHttpPort))
+            {
+                return configuredHttpPort;
+            }
+
+            return 80;
+        }
     }
 }
