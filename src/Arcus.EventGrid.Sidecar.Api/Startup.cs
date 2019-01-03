@@ -37,9 +37,8 @@ namespace Arcus.EventGrid.Sidecar.Api
                     Name = "Arcus",
                     Url = "https://github.com/arcus-azure/arcus.eventgrid.sidecar"
                 },
-                Title = "Arcus v1",
+                Title = "Arcus",
                 Description = "Push events to Azure Event Grid in a breeze - API allows you to send events over REST without having to worry about how Azure Event Grid works.",
-                Version = "v1",
                 License = new License
                 {
                     Name = "MIT",
