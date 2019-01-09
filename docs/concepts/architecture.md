@@ -4,7 +4,7 @@ title: Using Arcus Event Grid Sidecar
 ---
 
 # Architecture
-It's a hosted REST API that allows you to POST events to which will be forwarded to an Azure Event Grid Topic of choice.
+We provide a hosted REST API that allows you to POST events to which will be forwarded to an Azure Event Grid Topic of choice.
 
 ![Concept Overview](./../media/concepts-architecture.png)
 
