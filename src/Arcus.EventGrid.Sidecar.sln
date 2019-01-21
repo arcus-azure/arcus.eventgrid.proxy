@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arcus.EventGrid.Sidecar.Api", "Arcus.EventGrid.Sidecar.Api\Arcus.EventGrid.Sidecar.Api.csproj", "{CF1BA281-352B-41E0-B2AD-DC35C85358B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arcus.EventGrid.Sidecar.Api", "Arcus.EventGrid.Sidecar.Api\Arcus.EventGrid.Sidecar.Api.csproj", "{CF1BA281-352B-41E0-B2AD-DC35C85358B7}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "Arcus.EventGrid.Sidecar.Orchestrator", "Arcus.EventGrid.Sidecar.Orchestrator.dcproj", "{49D85A35-F341-47A3-887F-68DEC06CEBCD}"
 EndProject
