@@ -2,19 +2,20 @@
 using System.Collections.Generic;
 using Arcus.EventGrid.Sidecar.Api.Validation.Steps;
 using Arcus.EventGrid.Sidecar.Api.Validation.Steps.Interfaces;
+using Microsoft.Extensions.Configuration;
 
 namespace Arcus.EventGrid.Sidecar.Api.Validation
 {
     public class RuntimeValidator
     {
-        private static readonly List<IValidationStep> validationSteps = new List<IValidationStep>
+        public static List<ValidationResult> Run(IConfiguration configuration)
         {
-            new EventGridAuthKeyValidationStep(),
-            new EventGridTopicEndpointValidationStep()
-        };
+            var validationSteps = new List<IValidationStep>
+            {
+                new EventGridAuthKeyValidationStep(configuration),
+                new EventGridTopicEndpointValidationStep(configuration)
+            };
 
-        public static List<ValidationResult> Run()
-        {
             Console.WriteLine("Starting validation of runtime configuration...");
             List<ValidationResult> validationOutcomes = new List<ValidationResult>();
             foreach (var validationStep in validationSteps)
@@ -28,7 +29,7 @@ namespace Arcus.EventGrid.Sidecar.Api.Validation
 
             return validationOutcomes;
         }
-        
+
         private static void LogValidationResults(ValidationResult validationResult)
         {
             var validationOutcomeMessage = validationResult.Successful ? "successful" : "failed";

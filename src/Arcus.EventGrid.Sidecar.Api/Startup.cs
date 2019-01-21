@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using Arcus.EventGrid.Publishing;
 using Arcus.EventGrid.Publishing.Interfaces;
+using Arcus.EventGrid.Sidecar.Api.Validation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -33,6 +35,18 @@ namespace Arcus.EventGrid.Sidecar.Api
 
             services.UseOpenApiSpecifications();
             services.AddSingleton(BuildEventGridPublisher);
+
+            ValidateConfiguration();
+        }
+
+        private void ValidateConfiguration()
+        {
+            var validationOutcomes = RuntimeValidator.Run(Configuration);
+
+            if (validationOutcomes.Any(validationOutcome => validationOutcome.Successful == false))
+            {
+                throw new Exception("Unable to start up due to invalid configuration");
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

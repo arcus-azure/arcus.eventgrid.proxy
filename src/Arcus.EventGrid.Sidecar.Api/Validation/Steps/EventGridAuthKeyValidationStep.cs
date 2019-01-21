@@ -1,15 +1,22 @@
 ﻿using System;
 using Arcus.EventGrid.Sidecar.Api.Validation.Steps.Interfaces;
+using Microsoft.Extensions.Configuration;
 
 namespace Arcus.EventGrid.Sidecar.Api.Validation.Steps
 {
     public class EventGridAuthKeyValidationStep : IValidationStep
     {
+        private readonly IConfiguration _configuration;
         public string StepName { get; } = "Event Grid Authentication Key";
+
+        public EventGridAuthKeyValidationStep(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
 
         public ValidationResult Execute()
         {
-            var authKey = Environment.GetEnvironmentVariable(EnvironmentVariables.Runtime.EventGrid.AuthKey);
+            var authKey = _configuration[EnvironmentVariables.Runtime.EventGrid.AuthKey];
 
             if (string.IsNullOrWhiteSpace(authKey))
             {

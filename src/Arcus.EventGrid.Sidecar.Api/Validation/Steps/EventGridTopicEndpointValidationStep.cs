@@ -1,15 +1,23 @@
 ﻿using System;
 using Arcus.EventGrid.Sidecar.Api.Validation.Steps.Interfaces;
+using Microsoft.Extensions.Configuration;
 
 namespace Arcus.EventGrid.Sidecar.Api.Validation.Steps
 {
     public class EventGridTopicEndpointValidationStep : IValidationStep
     {
+        private readonly IConfiguration _configuration;
+
+        public EventGridTopicEndpointValidationStep(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         public string StepName { get; } = "Event Grid Topic Endpoint";
 
         public ValidationResult Execute()
         {
-            var rawTopicEndpoint = Environment.GetEnvironmentVariable(EnvironmentVariables.Runtime.EventGrid.TopicEndpoint);
+            var rawTopicEndpoint = _configuration[EnvironmentVariables.Runtime.EventGrid.TopicEndpoint];
 
             if (string.IsNullOrWhiteSpace(rawTopicEndpoint))
             {

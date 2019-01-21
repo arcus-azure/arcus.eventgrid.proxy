@@ -20,20 +20,8 @@ namespace Arcus.EventGrid.Sidecar.Api
         {
             Welcome();
 
-            ValidateConfiguration();
-
             BuildWebHost(args)
                 .Run();
-        }
-
-        private static void ValidateConfiguration()
-        {
-            var validationOutcomes = RuntimeValidator.Run();
-
-            if (validationOutcomes.Any(validationOutcome => validationOutcome.Successful == false))
-            {
-                throw new Exception("Unable to start up due to invalid configuration");
-            }
         }
 
         private static void Welcome()
