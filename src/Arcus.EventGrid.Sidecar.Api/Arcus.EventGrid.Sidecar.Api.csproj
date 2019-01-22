@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Arcus.EventGrid.Publishing" Version="20190118.0.0-PR-245918872" />
+    <PackageReference Include="Arcus.EventGrid.Publishing" Version="20190122.0.0-PR-245918872" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.1.1" />
