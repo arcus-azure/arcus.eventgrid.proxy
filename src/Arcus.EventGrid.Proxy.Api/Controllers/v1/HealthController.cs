@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace Arcus.EventGrid.Sidecar.Api.Controllers.v1
+namespace Arcus.EventGrid.Proxy.Api.Controllers.v1
 {
     [Route("api/v1/health")]
     [ApiController]

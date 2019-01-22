@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
-namespace Arcus.EventGrid.Sidecar.Api
+namespace Arcus.EventGrid.Proxy.Api
 {
     public class Program
     {
