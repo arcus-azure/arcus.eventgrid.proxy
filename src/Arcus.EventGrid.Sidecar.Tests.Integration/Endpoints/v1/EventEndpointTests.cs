@@ -21,7 +21,7 @@ namespace Arcus.EventGrid.Sidecar.Tests.Integration.Endpoints.v1
     public class EventEndpointTests : IAsyncLifetime
     {
         private ServiceBusEventConsumerHost _serviceBusEventConsumerHost;
-        private EventService _eventService = new EventService();
+        private readonly EventService _eventService = new EventService();
 
         public EventEndpointTests()
         {

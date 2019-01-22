@@ -7,10 +7,8 @@ using Newtonsoft.Json;
 
 namespace Arcus.EventGrid.Sidecar.Tests.Integration.Services
 {
-    public class EventService
+    public class EventService:Service
     {
-        private readonly HttpClient httpClient = new HttpClient();
-
         public async Task<HttpResponseMessage> EmitAsync(object eventPayload, string eventType, string eventId = "", string eventTimestamp = "", string eventSubject = "", string dataVersion = "")
         {
             var rawEventPayload = JsonConvert.SerializeObject(eventPayload);
@@ -19,7 +17,7 @@ namespace Arcus.EventGrid.Sidecar.Tests.Integration.Services
 
         public async Task<HttpResponseMessage> EmitAsync(string eventPayload, string eventType, string eventId = "", string eventTimestamp = "", string eventSubject = "", string dataVersion = "")
         {
-            var url = "http://localhost:888/api/v1/events/".AppendPathSegment(eventType);
+            var url = BaseUrl.AppendPathSegments("events", eventType);
 
             if (string.IsNullOrWhiteSpace(eventId) == false)
             {
@@ -38,7 +36,7 @@ namespace Arcus.EventGrid.Sidecar.Tests.Integration.Services
                 url = url.SetQueryParam("dataVersion", dataVersion);
             }
 
-            var response = await httpClient.PostAsync(url, new StringContent(eventPayload, Encoding.UTF8, "application/json"));
+            var response = await HttpClient.PostAsync(url, new StringContent(eventPayload, Encoding.UTF8, "application/json"));
             return response;
         }
     }
