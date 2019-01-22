@@ -6,24 +6,24 @@ redirect_from:
  - /index.html
 ---
 
-**Arcus Event Grid Sidecar** is a container that makes it easier to integrate with Azure Event Grid.
+**Arcus Event Grid Proxy** is a container that makes it easier to integrate with Azure Event Grid.
 
 ![Arcus Logo](https://raw.githubusercontent.com/arcus-azure/arcus/master/media/arcus.png)
 
 # Installation
-Running Arcus Event Grid Sidecar is super easy:
+Running Arcus Event Grid Proxy is super easy:
 ```
-docker run -d -p 8999:80 --name arcus arcusazure/azure-event-grid-sidecar
+docker run -d -p 8999:80 --name arcus arcusazure/azure-event-grid-proxy
 ```
 
-Docker image will be available on [Docker Hub](https://hub.docker.com/r/arcusazure/azure-event-grid-sidecar).
+Docker image will be available on [Docker Hub](https://hub.docker.com/r/arcusazure/azure-event-grid-proxy).
 
 # Features
 - Monitor runtime with a health endpoint ([docs](operations/health))
 
 # Documentation
 - **Concepts**
-    - [Using Arcus Event Grid Sidecar](concepts/architecture)
+    - [Using Arcus Event Grid Proxy](concepts/architecture)
 - **Deployment**
     - [Image Tagging Strategy](deploy/tagging-strategy)
 - **Configuration**
@@ -32,4 +32,4 @@ Docker image will be available on [Docker Hub](https://hub.docker.com/r/arcusazu
 # License
 This is licensed under The MIT License (MIT). Which means that you can use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the web application. But you always need to state that Codit is the original author of this web application.
 
-*[Full license here](https://github.com/arcus-azure/arcus.eventgrid.sidecar/blob/master/LICENSE)*
+*[Full license here](https://github.com/arcus-azure/arcus.eventgrid.proxy/blob/master/LICENSE)*
