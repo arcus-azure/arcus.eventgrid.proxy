@@ -63,8 +63,9 @@ namespace Arcus.EventGrid.Sidecar.Api
 
         private IEventGridPublisher BuildEventGridPublisher(IServiceProvider serviceProvider)
         {
-            var topicUri = new Uri("https://foo");
-            var authenticationKey = "bar";
+            var rawTopicEndpoint = Configuration[EnvironmentVariables.Runtime.EventGrid.TopicEndpoint];
+            var authenticationKey = Configuration[EnvironmentVariables.Runtime.EventGrid.AuthKey];
+            var topicUri = new Uri(rawTopicEndpoint);
             return EventGridPublisherBuilder.ForTopic(topicUri)
                 .UsingAuthenticationKey(authenticationKey)
                 .Build();

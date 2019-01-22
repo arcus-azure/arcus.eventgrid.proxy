@@ -52,10 +52,10 @@ namespace Arcus.EventGrid.Sidecar.Api.Controllers.v1
 
             await _eventGridPublisher.PublishRaw(eventId, eventType, rawEventPayload, eventSubject, dataVersion, parsedEventTimeStamp);
 
-            Response.Headers.Add("X-Event-Id", eventId);
-            Response.Headers.Add("X-Event-Subject", eventSubject);
-            Response.Headers.Add("X-Event-Timestamp", eventTimestamp);
-            Response.Headers.Add("X-Event-Data-Version", dataVersion);
+            Response.Headers.Add(Headers.Response.Events.Id, eventId);
+            Response.Headers.Add(Headers.Response.Events.Subject, eventSubject);
+            Response.Headers.Add(Headers.Response.Events.Timestamp, eventTimestamp);
+            Response.Headers.Add(Headers.Response.Events.DataVersion, dataVersion);
 
             return NoContent();
         }
