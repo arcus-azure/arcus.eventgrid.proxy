@@ -21,7 +21,7 @@ namespace Arcus.EventGrid.Proxy.Api.Extensions
                     Name = "Arcus Event Grid Proxy",
                     Url = "https://github.com/arcus-azure/arcus.eventgrid.proxy"
                 },
-                Title = "Arcus",
+                Title = "Arcus Event Grid Proxy",
                 Description = "Push events to Azure Event Grid in a breeze - API allows you to send events over REST without having to worry about how Azure Event Grid works.",
                 License = new License
                 {
