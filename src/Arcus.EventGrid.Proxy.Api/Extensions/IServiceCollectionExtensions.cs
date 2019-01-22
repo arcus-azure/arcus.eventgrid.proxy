@@ -1,9 +1,10 @@
 ﻿using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 
-namespace Microsoft.Extensions.DependencyInjection
+namespace Arcus.EventGrid.Proxy.Api.Extensions
 {
     public static class IServiceCollectionExtensions
     {
@@ -17,15 +18,15 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 Contact = new Contact
                 {
-                    Name = "Arcus",
-                    Url = "https://github.com/arcus-azure/arcus.eventgrid.sidecar"
+                    Name = "Arcus Event Grid Proxy",
+                    Url = "https://github.com/arcus-azure/arcus.eventgrid.proxy"
                 },
-                Title = "Arcus",
+                Title = "Arcus Event Grid Proxy",
                 Description = "Push events to Azure Event Grid in a breeze - API allows you to send events over REST without having to worry about how Azure Event Grid works.",
                 License = new License
                 {
                     Name = "MIT",
-                    Url = "https://github.com/arcus-azure/arcus.eventgrid.sidecar/blob/master/LICENSE"
+                    Url = "https://github.com/arcus-azure/arcus.eventgrid.proxy/blob/master/LICENSE"
                 }
             };
 

@@ -1,4 +1,4 @@
-﻿namespace Arcus.EventGrid.Sidecar.Api
+﻿namespace Arcus.EventGrid.Proxy.Api
 {
     public class EnvironmentVariables
     {

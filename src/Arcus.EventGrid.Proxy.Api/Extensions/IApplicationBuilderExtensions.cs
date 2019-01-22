@@ -1,6 +1,7 @@
-﻿using Swashbuckle.AspNetCore.SwaggerUI;
+﻿using Microsoft.AspNetCore.Builder;
+using Swashbuckle.AspNetCore.SwaggerUI;
 
-namespace Microsoft.AspNetCore.Builder
+namespace Arcus.EventGrid.Proxy.Api.Extensions
 {
     public static class IApplicationBuilderExtensions
     {
@@ -13,10 +14,10 @@ namespace Microsoft.AspNetCore.Builder
             applicationBuilder.UseSwagger();
             applicationBuilder.UseSwaggerUI(swaggerUiOptions =>
             {
-                swaggerUiOptions.SwaggerEndpoint("/swagger/v1/swagger.json", "Arcus Event Grid v1 API");
+                swaggerUiOptions.SwaggerEndpoint("/swagger/v1/swagger.json", "Arcus Event Grid Proxy v1 API");
                 swaggerUiOptions.DisplayOperationId();
                 swaggerUiOptions.EnableDeepLinking();
-                swaggerUiOptions.DocumentTitle = "Arcus Event Grid API";
+                swaggerUiOptions.DocumentTitle = "Arcus Event Grid Proxy API";
                 swaggerUiOptions.DocExpansion(DocExpansion.List);
                 swaggerUiOptions.DisplayRequestDuration();
                 swaggerUiOptions.EnableFilter();

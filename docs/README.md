@@ -1,7 +1,7 @@
 Documentation
 ====
 
-All documentation for Arcus Event Grid Sidecar which are published via GitHub Pages with Jekyll.
+All documentation for Arcus Event Grid Proxy which are published via GitHub Pages with Jekyll.
 
 ## Running Jekyll locally
 

@@ -6,7 +6,7 @@
     <ProjectGuid>49d85a35-f341-47a3-887f-68dec06cebcd</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger</DockerServiceUrl>
-    <DockerServiceName>arcus.eventgrid.sidecar.api</DockerServiceName>
+    <DockerServiceName>arcus.eventgrid.proxy.api</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">

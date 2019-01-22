@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Using Arcus Event Grid Sidecar
+title: Using Arcus Event Grid Proxy
 ---
 
 # Architecture
