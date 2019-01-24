@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Arcus.EventGrid.Testing" Version="20190122.0.0-PR-245918872" />
+    <PackageReference Include="Arcus.EventGrid.Testing" Version="2.3.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
     <PackageReference Include="xunit" Version="2.4.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
