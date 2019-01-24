@@ -6,15 +6,20 @@ using Xunit;
 namespace Arcus.EventGrid.Proxy.Tests.Integration.Endpoints.v1
 {
     [Collection("Integration")]
-    public class HealthEndpointTests
+    public class HealthEndpointTests : EndpointTest
     {
-        private readonly HealthService healthService = new HealthService();
+        private readonly HealthService _healthService;
+
+        public HealthEndpointTests()
+        {
+            _healthService = new HealthService(Configuration);
+        }
 
         [Fact]
         public async Task Health_Get_Succeeds()
         {
             // Act
-            var response = await healthService.GetAsync();
+            var response = await _healthService.GetAsync();
 
             // Assert
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);

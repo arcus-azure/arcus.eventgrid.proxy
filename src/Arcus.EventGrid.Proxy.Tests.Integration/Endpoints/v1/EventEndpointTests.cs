@@ -17,20 +17,15 @@ using Xunit;
 namespace Arcus.EventGrid.Proxy.Tests.Integration.Endpoints.v1
 {
     [Collection("Integration")]
-    public class EventEndpointTests : IAsyncLifetime
+    public class EventEndpointTests : EndpointTest, IAsyncLifetime
     {
         private ServiceBusEventConsumerHost _serviceBusEventConsumerHost;
-        private readonly EventService _eventService = new EventService();
+        private readonly EventService _eventService;
 
         public EventEndpointTests()
         {
-            Configuration = new ConfigurationBuilder()
-                .AddJsonFile(path: "appsettings.json", optional: true)
-                .AddEnvironmentVariables()
-                .Build();
+            _eventService = new EventService(Configuration);
         }
-
-        protected IConfiguration Configuration { get; }
 
         public async Task InitializeAsync()
         {
