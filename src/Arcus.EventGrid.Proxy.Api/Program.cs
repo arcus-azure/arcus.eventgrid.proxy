@@ -33,10 +33,7 @@ namespace Arcus.EventGrid.Proxy.Api
             var httpEndpointUrl = $"http://+:{httpPort}";
 
             return WebHost.CreateDefaultBuilder(args)
-                .UseKestrel(kestrelServerOptions =>
-                {
-                    kestrelServerOptions.AddServerHeader = false;
-                })
+                .UseKestrel(kestrelServerOptions => { kestrelServerOptions.AddServerHeader = false; })
                 .UseUrls(httpEndpointUrl)
                 .UseStartup<Startup>()
                 .Build();
