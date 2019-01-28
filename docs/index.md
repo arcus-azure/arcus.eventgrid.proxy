@@ -13,12 +13,12 @@ redirect_from:
 # Installation
 Running Arcus Event Grid Proxy is super easy:
 ```
-docker run -d -p 8999:80 --name arcus arcusazure/azure-event-grid-proxy /
+docker run -d -p 8999:80 --name arcus arcusazure/arcus-event-grid-proxy /
                          -e ARCUS_EVENTGRID_TOPICENDPOINT= /
                          -e ARCUS_EVENTGRID_AUTHKEY=
 ```
 
-Docker image will be available on [Docker Hub](https://hub.docker.com/r/arcusazure/azure-event-grid-proxy).
+Docker image will be available on [Docker Hub](https://hub.docker.com/r/arcusazure/arcus-event-grid-proxy).
 
 # Features
 - Push events to Azure Event Grid via REST ([docs](features/push-events))
