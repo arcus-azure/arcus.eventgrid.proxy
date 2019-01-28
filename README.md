@@ -9,7 +9,7 @@ Proxy for sending events to Azure Event Grid.
 ![Arcus](https://raw.githubusercontent.com/arcus-azure/arcus/master/media/arcus.png)
 
 # Installation
-The image is available on [Docker Hub](https://cloud.docker.com/u/arcusazure/repository/docker/arcusazure/azure-event-grid-proxy) and can be installed via [Docker](https://eventgrid-proxy.arcus-azure.net/#installation).
+The image is available on [Docker Hub](https://hub.docker.com/r/arcusazure/azure-event-grid-proxy) and can be installed via [Docker](https://eventgrid-proxy.arcus-azure.net/#installation).
 
 # Documentation
 All documentation can be found on [here](https://eventgrid-proxy.arcus-azure.net/).
