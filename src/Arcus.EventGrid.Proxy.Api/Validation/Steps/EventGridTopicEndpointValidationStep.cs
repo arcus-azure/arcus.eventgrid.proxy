@@ -24,16 +24,12 @@ namespace Arcus.EventGrid.Proxy.Api.Validation.Steps
                 return ValidationResult.Failure(StepName, "No topic endpoint was specified");
             }
 
-            try
+            if (Uri.IsWellFormedUriString(rawTopicEndpoint, UriKind.Absolute) == false)
             {
-                var uri = new Uri(rawTopicEndpoint);
+                return ValidationResult.Failure(StepName, "Topic endpoint is not a well-formed URI");
+            }
 
-                return ValidationResult.Success(StepName);
-            }
-            catch
-            {
-                return ValidationResult.Failure(StepName, "No valid topic endpoint was specified");
-            }
+            return ValidationResult.Success(StepName);
         }
     }
 }
