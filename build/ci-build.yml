@@ -101,6 +101,7 @@ stages:
               tokenSuffix: '}#'
       - job: Docker
         displayName: 'Setup Docker image'
+        dependsOn: Workspace
         pool:
           vmImage: 'ubuntu-16.04'
         steps:
@@ -124,6 +125,7 @@ stages:
                 ARCUS_EVENTGRID_AUTHKEY=$(Arcus_EventGrid_EndpointKey)
       - job: RunIntegrationTests
         displayName: 'Run integration tests'
+        dependsOn: Docker
         pool:
           vmImage: 'ubuntu-16.04'
         steps:
