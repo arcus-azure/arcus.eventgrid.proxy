@@ -74,8 +74,8 @@ stages:
     dependsOn: Build
     condition: succeeded()
     jobs:
-      - job: IntegrationTests
-        displayName: 'Run integration tests'
+      - job: Workspace
+        displayName: 'Setup integration test workspace'
         pool:
           vmImage: 'ubuntu-16.04'
         steps:
@@ -99,6 +99,34 @@ stages:
               keepToken: false
               tokenPrefix: '#{'
               tokenSuffix: '}#'
+      - job: Docker
+        displayName: 'Setup Docker image'
+        pool:
+          - vmImage: 'ubuntu-16.04'
+        steps:
+          - task: Docker@1
+            displayName: 'Build Docker image'
+            inputs:
+              dockerFile: src/Arcus.EventGrid.Proxy.Api/Dockerfile
+              imageName: 'azure-event-grid-proxy:$(Build.BuildId)'
+              useDefaultContext: false
+              buildContext: src
+          - task: Docker@1
+            displayName: 'Run Docker image'
+            inputs:
+              command: 'Run an image'
+              imageName: 'azure-event-grid-proxy:$(Build.BuildId)'
+              containerName: 'azure-event-grid-proxy'
+              ports: '888:888'
+              envVars: |
+                ARCUS_HTTP_PORT=888
+                ARCUS_EVENTGRID_TOPICENDPOINT=$(Arcus_EventGrid_TopicEndpoint)
+                ARCUS_EVENTGRID_AUTHKEY=$(Arcus_EventGrid_EndpointKey)
+      - job: RunIntegrationTests
+        displayName: 'Run integration tests'
+        pool:
+          - vmImage: 'ubuntu-16.04'
+        steps:
           - task: DotNetCoreCLI@2
             displayName: 'Run integration tests'
             inputs:
