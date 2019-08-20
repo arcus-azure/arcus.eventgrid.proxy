@@ -74,8 +74,8 @@ stages:
     dependsOn: Build
     condition: succeeded()
     jobs:
-      - job: Workspace
-        displayName: 'Setup integration test workspace'
+      - job: RunIntegrationTests
+        displayName: 'Run integration tests'
         pool:
           vmImage: 'ubuntu-16.04'
         steps:
@@ -84,10 +84,6 @@ stages:
             inputs:
               artifact: 'Build'
               path: '$(Build.SourcesDirectory)'
-          - task: DotNetCoreInstaller@0
-            displayName: 'Import .NET Core SDK ($(DotNet.Sdk.Version))'
-            inputs:
-              version: '$(DotNet.Sdk.Version)'
           - task: qetza.replacetokens.replacetokens-task.replacetokens@3
             displayName: 'Replace integration test tokens'
             inputs:
@@ -99,12 +95,10 @@ stages:
               keepToken: false
               tokenPrefix: '#{'
               tokenSuffix: '}#'
-      - job: Docker
-        displayName: 'Setup Docker image'
-        dependsOn: Workspace
-        pool:
-          vmImage: 'ubuntu-16.04'
-        steps:
+          - task: DotNetCoreInstaller@0
+            displayName: 'Import .NET Core SDK ($(DotNet.Sdk.Version))'
+            inputs:
+              version: '$(DotNet.Sdk.Version)'
           - task: Docker@1
             displayName: 'Build Docker image'
             inputs:
@@ -123,12 +117,6 @@ stages:
                 ARCUS_HTTP_PORT=888
                 ARCUS_EVENTGRID_TOPICENDPOINT=$(Arcus_EventGrid_TopicEndpoint)
                 ARCUS_EVENTGRID_AUTHKEY=$(Arcus_EventGrid_EndpointKey)
-      - job: RunIntegrationTests
-        displayName: 'Run integration tests'
-        dependsOn: Docker
-        pool:
-          vmImage: 'ubuntu-16.04'
-        steps:
           - task: DotNetCoreCLI@2
             displayName: 'Run integration tests'
             inputs:
