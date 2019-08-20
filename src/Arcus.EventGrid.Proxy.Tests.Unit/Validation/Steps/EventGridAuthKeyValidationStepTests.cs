@@ -14,7 +14,7 @@ namespace Arcus.EventGrid.Proxy.Tests.Unit.Validation.Steps
             // Arrange
             const string configuredAuthKey = "ABC";
             var configurationStub = new ConfigurationStub(EnvironmentVariables.Runtime.EventGrid.AuthKey, configuredAuthKey);
-            var validationStep = new EventGridAuthKeyValidationStep(configurationStub);
+            var validationStep = new EventGridAuthKValidationStep(configurationStub);
 
             // Act
             var validationResult = validationStep.Execute();
