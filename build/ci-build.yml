@@ -2,13 +2,17 @@ name: $(date:yyyyMMdd)$(rev:.r)
 
 trigger:
   branches:
-    include: master
+    include:
+    - master
   paths:
-    include: src/*
+    include:
+    - src/*
     
 pr:
   paths:
-    include: src/*
+    include:
+    - src/*
+    - build/ci-build.yml
 
 variables:
   - group: 'Arcus Event Grid - Integration Testing'
