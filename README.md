@@ -1,8 +1,10 @@
 # Arcus Event Grid Proxy
 [![License](https://img.shields.io/github/license/mashape/apistatus.svg?style=flat-square)](./LICENSE)
-[![Build Status](https://dev.azure.com/codit/Arcus/_apis/build/status/Commit%20builds/CI%20-%20Arcus.EventGrid.Proxy)](https://dev.azure.com/codit/Arcus/_build/latest?definitionId=552)
+[![Build Status](https://dev.azure.com/codit/Arcus/_apis/build/status/Commit%20builds/CI%20-%20Arcus.EventGrid.Proxy?branchName=master)](https://dev.azure.com/codit/Arcus/_build/latest?definitionId=738&branchName=master)
 [![Docker Pulls](https://img.shields.io/docker/pulls/arcusazure/arcus-event-grid-proxy.svg?style=flat-square)](https://hub.docker.com/r/arcusazure/arcus-event-grid-proxy/) 
 [![Docker Stars](https://img.shields.io/docker/stars/arcusazure/arcus-event-grid-proxy.svg?style=flat-square)](https://hub.docker.com/r/arcusazure/arcus-event-grid-proxy/)
+
+
 
 Proxy for sending events to Azure Event Grid.
 
