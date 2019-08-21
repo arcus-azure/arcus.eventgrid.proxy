@@ -1,0 +1,77 @@
+name: $(Image.Version)
+
+trigger: none
+
+variables:
+  - name: 'Image.Name'
+    value: 'arcusazure/arcus-event-grid-proxy'
+  - name: 'Image.TaggedName'
+    value: '$(Image.Name):$(Image.Version)'
+  # variable 'Image.Version' is set as queue-time variable in azure devops.
+
+stages:
+  - stage: 'Docker'
+    jobs:
+      - job: 'Docker'
+        pool:
+          vmImage: 'ubuntu-16.04'
+        steps:
+          - powershell: |
+              Write-Host "Determining '{major}.{minor}' for '$(Image.Version)'"
+
+              $index = "$(Image.Version)".IndexOf(".", 2);
+
+              $majorMinorVersion = "$(Image.Version)".Substring(0, $index);
+
+              Write-Host "Found version '$majorMinorVersion'"
+              Write-Output ("##vso[task.setvariable variable=Image.MajorMinorVersion;]$majorMinorVersion")
+            displayName: "Determine '{major}.{minor}' version"
+          - task: Docker@1
+            displayName: 'Build image'
+            inputs:
+              dockerFile: src/Arcus.EventGrid.Proxy.Api/Dockerfile
+              arguments: '--tag $(Image.Name):$(Image.MajorMinorVersion)'
+              imageName: '$(Image.TaggedName)'
+              includeLatestTag: true
+              useDefaultContext: false
+              buildContext: src
+          - task: GitHubRelease@0
+            displayName: 'Create GitHub release'
+            inputs:
+              gitHubConnection: 'GitHub (arcus-automation - OAuth)'
+              repositoryName: 'arcus-azure/arcus.eventgrid.proxy'
+              tagSource: manual
+              tag: 'v$(Image.Version)'
+              title: 'v$(Image.Version)'
+              releaseNotesSource: input
+              releaseNotes: |
+                Deploy new version via Docker:
+                ```shell
+                docker run -d -p 88:80 --name arcus $(Image.Name):$(Image.Version)
+                ```
+
+                More information can be found on [Docker Hub](https://hub.docker.com/r/$(Image.Name))
+          - task: Docker@1
+            displayName: "Push '{major}.{minor}.{patch}' to Docker Hub"
+            inputs:
+              containerregistrytype: 'Container Registry'
+              dockerRegistryEndpoint: 'Arcus Azure - Docker Hub'
+              command: 'Push an image'
+              imageName: '$(Image.TaggedName)'
+              includeSourceTags: true
+          - task: Docker@1
+            displayName: "Push '{major}.{minor}' to Docker Hub"
+            inputs:
+              containerregistrytype: 'Container Registry'
+              dockerRegistryEndpoint: 'Arcus Azure - Docker Hub'
+              command: 'Push an image'
+              imageName: '$(Image.Name):$(Image.MajorMinorVersion)'
+              includeSourceTags: true
+          - task: Docker@1
+            displayName: "Push 'latest' to Docker Hub"
+            inputs:
+              containerregistrytype: 'Container Registry'
+              dockerRegistryEndpoint: 'Arcus Azure - Docker Hub'
+              command: 'Push an image'
+              imageName: '$(Image.Name):latest'
+              includeSourceTags: true
