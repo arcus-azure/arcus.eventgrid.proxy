@@ -8,6 +8,7 @@ variables:
   - name: 'Image.TaggedName'
     value: '$(Image.Name):$(Image.Version)'
   # variable 'Image.Version' is set as queue-time variable in azure devops.
+  # variable 'Image.MajorMinorVersion' is set during the first powershell step 'Determine'{major}.{minor} version'
 
 stages:
   - stage: 'Docker'
@@ -26,15 +27,14 @@ stages:
               Write-Host "Found version '$majorMinorVersion'"
               Write-Output ("##vso[task.setvariable variable=Image.MajorMinorVersion;]$majorMinorVersion")
             displayName: "Determine '{major}.{minor}' version"
-          - task: Docker@1
+          - task: Docker@2
             displayName: 'Build image'
             inputs:
-              dockerFile: src/Arcus.EventGrid.Proxy.Api/Dockerfile
-              arguments: '--tag $(Image.Name):$(Image.MajorMinorVersion)'
-              imageName: '$(Image.TaggedName)'
-              includeLatestTag: true
-              useDefaultContext: false
+              containerRegistry: 'Arcus Azure - Docker Hub'
+              command: build
+              Dockerfile: src/Arcus.EventGrid.Proxy.Api/Dockerfile
               buildContext: src
+              tags: '$(Image.Name):$(Image.MajorMinorVersion)'
           - task: GitHubRelease@0
             displayName: 'Create GitHub release'
             inputs:
@@ -51,27 +51,21 @@ stages:
                 ```
 
                 More information can be found on [Docker Hub](https://hub.docker.com/r/$(Image.Name))
-          - task: Docker@1
+          - task: Docker@2
             displayName: "Push '{major}.{minor}.{patch}' to Docker Hub"
             inputs:
-              containerregistrytype: 'Container Registry'
-              dockerRegistryEndpoint: 'Arcus Azure - Docker Hub'
-              command: 'Push an image'
-              imageName: '$(Image.TaggedName)'
-              includeSourceTags: true
-          - task: Docker@1
+              containerRegistry: 'Arcus Azure - Docker Hub'
+              command: push
+              tags: '$(Build.Repository.Name):$(Build.BuildId)'
+          - task: Docker@2
             displayName: "Push '{major}.{minor}' to Docker Hub"
             inputs:
-              containerregistrytype: 'Container Registry'
-              dockerRegistryEndpoint: 'Arcus Azure - Docker Hub'
-              command: 'Push an image'
-              imageName: '$(Image.Name):$(Image.MajorMinorVersion)'
-              includeSourceTags: true
-          - task: Docker@1
+              containerRegistry: 'Arcus Azure - Docker Hub'
+              command: push
+              tags: '$(Image.Name):$(Image.MajorMinorVersion)'
+          - task: Docker@2
             displayName: "Push 'latest' to Docker Hub"
             inputs:
-              containerregistrytype: 'Container Registry'
-              dockerRegistryEndpoint: 'Arcus Azure - Docker Hub'
-              command: 'Push an image'
-              imageName: '$(Image.Name):latest'
-              includeSourceTags: true
+              containerRegistry: 'Arcus Azure - Docker Hub'
+              command: push
+              tags: '$(Build.Repository.Name):$(Build.BuildId)'
