@@ -4,7 +4,8 @@ trigger: none
 
 variables:
   - name: 'Image.Name'
-    value: 'arcusazure/arcus-event-grid-proxy'
+    #value: 'arcusazure/arcus-event-grid-proxy'
+    value: 'arcusazure/arcus-event-grid-proxy-ignore'
   - name: 'Image.TaggedName'
     value: '$(Image.Name):$(Image.Version)'
   # variable 'Image.Version' is set as queue-time variable in azure devops.
