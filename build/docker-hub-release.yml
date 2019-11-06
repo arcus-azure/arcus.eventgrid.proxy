@@ -59,8 +59,7 @@ stages:
             inputs:
               containerRegistry: 'Arcus Azure - Docker Hub'
               command: push
-              # tags: '$(Build.Repository.Name):$(Build.BuildId)'
-              tags: 'arcus.eventgrid.proxy:$(Build.BuildId)'
+              tags: '$(Build.Repository.Name):$(Build.BuildId)'
               repository: $(Docker.Repository)
           - task: Docker@2
             displayName: "Push '{major}.{minor}' to Docker Hub"
@@ -74,6 +73,5 @@ stages:
             inputs:
               containerRegistry: 'Arcus Azure - Docker Hub'
               command: push
-              # tags: '$(Build.Repository.Name):$(Build.BuildId)'
-              tags: 'arcus.eventgrid.proxy:$(Build.BuildId)'
+              tags: '$(Build.Repository.Name):$(Build.BuildId)'
               repository: $(Docker.Repository)
