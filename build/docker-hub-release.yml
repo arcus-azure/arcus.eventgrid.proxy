@@ -36,22 +36,22 @@ stages:
               Dockerfile: src/Arcus.EventGrid.Proxy.Api/Dockerfile
               buildContext: src
               tags: '$(Image.Name):$(Image.MajorMinorVersion)'
-          - task: GitHubRelease@0
-            displayName: 'Create GitHub release'
-            inputs:
-              gitHubConnection: 'GitHub (arcus-automation - OAuth)'
-              repositoryName: 'arcus-azure/arcus.eventgrid.proxy'
-              tagSource: manual
-              tag: 'v$(Image.Version)'
-              title: 'v$(Image.Version)'
-              releaseNotesSource: input
-              releaseNotes: |
-                Deploy new version via Docker:
-                ```shell
-                docker run -d -p 88:80 --name arcus $(Image.Name):$(Image.Version)
-                ```
+          # - task: GitHubRelease@0
+          #   displayName: 'Create GitHub release'
+          #   inputs:
+          #     gitHubConnection: 'GitHub (arcus-automation - OAuth)'
+          #     repositoryName: 'arcus-azure/arcus.eventgrid.proxy'
+          #     tagSource: manual
+          #     tag: 'v$(Image.Version)'
+          #     title: 'v$(Image.Version)'
+          #     releaseNotesSource: input
+          #     releaseNotes: |
+          #       Deploy new version via Docker:
+          #       ```shell
+          #       docker run -d -p 88:80 --name arcus $(Image.Name):$(Image.Version)
+          #       ```
 
-                More information can be found on [Docker Hub](https://hub.docker.com/r/$(Image.Name))
+          #       More information can be found on [Docker Hub](https://hub.docker.com/r/$(Image.Name))
           - task: Docker@2
             displayName: "Push '{major}.{minor}.{patch}' to Docker Hub"
             inputs:
