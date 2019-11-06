@@ -8,6 +8,8 @@ variables:
     value: 'arcusazure/arcus-event-grid-proxy-ignore'
   - name: 'Image.TaggedName'
     value: '$(Image.Name):$(Image.Version)'
+  - name: 'Repository'
+    value: 'arcusautomation/arcus-event-grid-proxy-ignore'
   # variable 'Image.Version' is set as queue-time variable in azure devops.
   # variable 'Image.MajorMinorVersion' is set during the first powershell step 'Determine'{major}.{minor} version'
 
@@ -58,15 +60,18 @@ stages:
               containerRegistry: 'Arcus Azure - Docker Hub'
               command: push
               tags: '$(Build.Repository.Name):$(Build.BuildId)'
+              repository: $(Repository)
           - task: Docker@2
             displayName: "Push '{major}.{minor}' to Docker Hub"
             inputs:
               containerRegistry: 'Arcus Azure - Docker Hub'
               command: push
               tags: '$(Image.Name):$(Image.MajorMinorVersion)'
+              repository: $(Repository)
           - task: Docker@2
             displayName: "Push 'latest' to Docker Hub"
             inputs:
               containerRegistry: 'Arcus Azure - Docker Hub'
               command: push
               tags: '$(Build.Repository.Name):$(Build.BuildId)'
+              repository: $(Repository)
