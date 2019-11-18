@@ -5,10 +5,6 @@ trigger: none
 variables:
   - name: 'Image.Name'
     value: 'arcusazure/arcus-event-grid-proxy-ignore'
-  - name: 'Image.TaggedName'
-    value: '$(Image.Name):$(Image.Version)'
-  - name: 'Docker.Repository'
-    value: 'arcusautomation'
   # variable 'Image.Version' is set as queue-time variable in azure devops.
   # variable 'Image.MajorMinorVersion' is set during the first powershell step 'Determine'{major}.{minor} version'
 
@@ -35,30 +31,19 @@ stages:
               script: 'docker build . --file Arcus.EventGrid.Proxy.Api/Dockerfile --tag $(Image.Name):$(Build.BuildId) --tag $(Image.Name):$(Image.MajorMinorVersion) --tag $(Image.Name):latest'
               workingDirectory: 'src'
             displayName: 'Build Docker image'
-          # - task: Docker@2
-          #   displayName: 'Build image'
-          #   inputs:
-          #     containerRegistry: 'Arcus Azure - Docker Hub'
-          #     command: build
-          #     Dockerfile: src/Arcus.EventGrid.Proxy.Api/Dockerfile
-          #     buildContext: src
-          #     tags: '$(Image.Name):$(Image.MajorMinorVersion)'
-          # - task: GitHubRelease@0
-          #   displayName: 'Create GitHub release'
-          #   inputs:
-          #     gitHubConnection: 'GitHub (arcus-automation - OAuth)'
-          #     repositoryName: 'arcus-azure/arcus.eventgrid.proxy'
-          #     tagSource: manual
-          #     tag: 'v$(Image.Version)'
-          #     title: 'v$(Image.Version)'
-          #     releaseNotesSource: input
-          #     releaseNotes: |
-          #       Deploy new version via Docker:
-          #       ```shell
-          #       docker run -d -p 88:80 --name arcus $(Image.Name):$(Image.Version)
-          #       ```
+          - ${{ if not(contains(variables['Build.BuildNumber'], '-')) }}:
+              - template: github/create-release.yml@templates
+                parameters:
+                  repositoryName: 'azure-arcus/arcus.eventgrid.proxy'
+                  tag: 'v$(Image.Version)'
+                  releaseTitle: 'v$(Image.Version)'
+                  releaseNotes: |
+                    Deploy new version via Docker:
+                    ```shell
+                    docker run -d -p 88:80 --name arcus $(Image.Name):$(Image.Version)
+                    ```
 
-          #       More information can be found on [Docker Hub](https://hub.docker.com/r/$(Image.Name))
+                    More information can be found on [Docker Hub](https://hub.docker.com/r/$(Image.Name))
           - task: Docker@2
             displayName: "Push '{major}.{minor}.{patch}' to Docker Hub"
             inputs:
