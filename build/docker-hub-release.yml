@@ -1,15 +1,18 @@
 name: $(Image.Version)
 
 trigger: none
+pr: none
+
+resources:
+  repositories:
+    - repository: templates
+      type: github
+      name: arcus-azure/azure-devops-templates
+      endpoint: arcus-azure
 
 variables:
   - name: 'Image.Name'
-    #value: 'arcusazure/arcus-event-grid-proxy'
     value: 'arcusazure/arcus-event-grid-proxy-ignore'
-  - name: 'Image.TaggedName'
-    value: '$(Image.Name):$(Image.Version)'
-  - name: 'Docker.Repository'
-    value: 'arcusautomation/arcus-event-grid-proxy-ignore'
   # variable 'Image.Version' is set as queue-time variable in azure devops.
   # variable 'Image.MajorMinorVersion' is set during the first powershell step 'Determine'{major}.{minor} version'
 
@@ -30,48 +33,43 @@ stages:
               Write-Host "Found version '$majorMinorVersion'"
               Write-Output ("##vso[task.setvariable variable=Image.MajorMinorVersion;]$majorMinorVersion")
             displayName: "Determine '{major}.{minor}' version"
-          - task: Docker@2
-            displayName: 'Build image'
+          - task: PowerShell@2
             inputs:
-              containerRegistry: 'Arcus Azure - Docker Hub'
-              command: build
-              Dockerfile: src/Arcus.EventGrid.Proxy.Api/Dockerfile
-              buildContext: src
-              tags: '$(Image.Name):$(Image.MajorMinorVersion)'
-          # - task: GitHubRelease@0
-          #   displayName: 'Create GitHub release'
-          #   inputs:
-          #     gitHubConnection: 'GitHub (arcus-automation - OAuth)'
-          #     repositoryName: 'arcus-azure/arcus.eventgrid.proxy'
-          #     tagSource: manual
-          #     tag: 'v$(Image.Version)'
-          #     title: 'v$(Image.Version)'
-          #     releaseNotesSource: input
-          #     releaseNotes: |
-          #       Deploy new version via Docker:
-          #       ```shell
-          #       docker run -d -p 88:80 --name arcus $(Image.Name):$(Image.Version)
-          #       ```
+              targetType: 'inline'
+              script: 'docker build . --file Arcus.EventGrid.Proxy.Api/Dockerfile --tag $(Image.Name):$(Build.BuildId) --tag $(Image.Name):$(Image.MajorMinorVersion) --tag $(Image.Name):latest'
+              workingDirectory: 'src'
+            displayName: 'Build Docker image'
+          - ${{ if not(contains(variables['Build.BuildNumber'], '-')) }}:
+              - template: github/create-release.yml@templates
+                parameters:
+                  repositoryName: 'azure-arcus/arcus.eventgrid.proxy'
+                  tag: 'v$(Image.Version)'
+                  releaseTitle: 'v$(Image.Version)'
+                  releaseNotes: |
+                    Deploy new version via Docker:
+                    ```shell
+                    docker run -d -p 88:80 --name arcus $(Image.Name):$(Image.Version)
+                    ```
 
-          #       More information can be found on [Docker Hub](https://hub.docker.com/r/$(Image.Name))
+                    More information can be found on [Docker Hub](https://hub.docker.com/r/$(Image.Name))
           - task: Docker@2
             displayName: "Push '{major}.{minor}.{patch}' to Docker Hub"
             inputs:
               containerRegistry: 'Arcus Azure - Docker Hub'
               command: push
               tags: '$(Build.BuildId)'
-              repository: $(Docker.Repository)
+              repository: $(Image.Name)
           - task: Docker@2
             displayName: "Push '{major}.{minor}' to Docker Hub"
             inputs:
               containerRegistry: 'Arcus Azure - Docker Hub'
               command: push
-              tags: '$(Image.Name):$(Image.MajorMinorVersion)'
-              repository: $(Docker.Repository)
+              tags: '$(Image.MajorMinorVersion)'
+              repository: $(Image.Name)
           - task: Docker@2
             displayName: "Push 'latest' to Docker Hub"
             inputs:
               containerRegistry: 'Arcus Azure - Docker Hub'
               command: push
-              tags: '$(Build.BuildId)'
-              repository: $(Docker.Repository)
+              tags: 'latest'
+              repository: $(Image.Name)
