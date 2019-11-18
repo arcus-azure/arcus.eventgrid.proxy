@@ -32,7 +32,7 @@ stages:
           - task: PowerShell@2
             inputs:
               targetType: 'inline'
-              script: 'docker build . --file .\Arcus.EventGrid.Proxy.Api\Dockerfile --tag $(Image.Name):$(Build.BuildId) --tag $(Image.Name):$(Image.MajorMinorVersion) --tag $(Image.Name):latest'
+              script: 'docker build . --file Arcus.EventGrid.Proxy.Api/Dockerfile --tag $(Image.Name):$(Build.BuildId) --tag $(Image.Name):$(Image.MajorMinorVersion) --tag $(Image.Name):latest'
               workingDirectory: 'src'
             displayName: 'Build Docker image'
           # - task: Docker@2
