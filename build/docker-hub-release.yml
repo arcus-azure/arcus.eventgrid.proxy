@@ -1,6 +1,14 @@
 name: $(Image.Version)
 
 trigger: none
+pr: none
+
+resources:
+  repositories:
+    - repository: templates
+      type: github
+      name: arcus-azure/azure-devops-templates
+      endpoint: arcus-azure
 
 variables:
   - name: 'Image.Name'
