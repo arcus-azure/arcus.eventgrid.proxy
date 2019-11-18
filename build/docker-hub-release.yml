@@ -72,11 +72,11 @@ stages:
               containerRegistry: 'Arcus Azure - Docker Hub'
               command: push
               tags: '$(Image.MajorMinorVersion)'
-              repository: $(Docker.Repository)
+              repository: $(Image.Name)
           - task: Docker@2
             displayName: "Push 'latest' to Docker Hub"
             inputs:
               containerRegistry: 'Arcus Azure - Docker Hub'
               command: push
               tags: 'latest'
-              repository: $(Docker.Repository)
+              repository: $(Image.Name)
