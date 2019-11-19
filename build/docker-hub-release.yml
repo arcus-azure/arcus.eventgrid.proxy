@@ -39,19 +39,18 @@ stages:
               script: 'docker build . --file Arcus.EventGrid.Proxy.Api/Dockerfile --tag $(Image.Name):$(Build.BuildId) --tag $(Image.Name):$(Image.MajorMinorVersion) --tag $(Image.Name):latest'
               workingDirectory: 'src'
             displayName: 'Build Docker image'
-          - ${{ if not(contains(variables['Build.BuildNumber'], '-')) }}:
-              - template: github/create-release.yml@templates
-                parameters:
-                  repositoryName: 'azure-arcus/arcus.eventgrid.proxy'
-                  tag: 'v$(Image.Version)'
-                  releaseTitle: 'v$(Image.Version)'
-                  releaseNotes: |
-                    Deploy new version via Docker:
-                    ```shell
-                    docker run -d -p 88:80 --name arcus $(Image.Name):$(Image.Version)
-                    ```
+          - template: github/create-release.yml@templates
+            parameters:
+              repositoryName: 'azure-arcus/arcus.eventgrid.proxy'
+              tag: 'v$(Image.Version)'
+              releaseTitle: 'v$(Image.Version)'
+              releaseNotes: |
+                Deploy new version via Docker:
+                ```shell
+                docker run -d -p 88:80 --name arcus $(Image.Name):$(Image.Version)
+                ```
 
-                    More information can be found on [Docker Hub](https://hub.docker.com/r/$(Image.Name))
+                More information can be found on [Docker Hub](https://hub.docker.com/r/$(Image.Name))
           - task: Docker@2
             displayName: "Push '{major}.{minor}.{patch}' to Docker Hub"
             inputs:
