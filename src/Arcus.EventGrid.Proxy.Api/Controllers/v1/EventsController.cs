@@ -50,7 +50,7 @@ namespace Arcus.EventGrid.Proxy.Api.Controllers.v1
                 return BadRequest($"Unable to parse specified event timestamp '{eventTimestamp}'");
             }
 
-            await _eventGridPublisher.PublishRaw(eventId, eventType, rawEventPayload, eventSubject, dataVersion, parsedEventTimeStamp);
+            await _eventGridPublisher.PublishRawAsync(eventId, eventType, rawEventPayload, eventSubject, dataVersion, parsedEventTimeStamp);
 
             Response.Headers.Add(Headers.Response.Events.Id, eventId);
             Response.Headers.Add(Headers.Response.Events.Subject, eventSubject);

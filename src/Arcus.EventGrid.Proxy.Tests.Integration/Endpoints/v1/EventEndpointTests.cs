@@ -33,12 +33,12 @@ namespace Arcus.EventGrid.Proxy.Tests.Integration.Endpoints.v1
             var topicName = Configuration.GetValue<string>("Arcus:ServiceBus:TopicName");
 
             var serviceBusEventConsumerHostOptions = new ServiceBusEventConsumerHostOptions(topicName, connectionString);
-            _serviceBusEventConsumerHost = await ServiceBusEventConsumerHost.Start(serviceBusEventConsumerHostOptions, new NoOpLogger());
+            _serviceBusEventConsumerHost = await ServiceBusEventConsumerHost.StartAsync(serviceBusEventConsumerHostOptions, new NoOpLogger());
         }
 
         public async Task DisposeAsync()
         {
-            await _serviceBusEventConsumerHost.Stop();
+            await _serviceBusEventConsumerHost.StopAsync();
         }
 
         [Fact]
@@ -148,7 +148,7 @@ namespace Arcus.EventGrid.Proxy.Tests.Integration.Endpoints.v1
         {
             var receivedEvent = GetReceivedEvent(eventId);
             var parsedTime = DateTimeOffset.Parse(eventTimestamp);
-            Assert.Equal(parsedTime.UtcDateTime, receivedEvent.EventTime.UtcDateTime);
+            Assert.Equal(parsedTime.UtcDateTime, receivedEvent.EventTime.ToUniversalTime());
             Assert.Equal(eventType, receivedEvent.EventType);
             Assert.Equal(eventId, receivedEvent.Id);
             Assert.Equal(eventSubject, receivedEvent.Subject);
