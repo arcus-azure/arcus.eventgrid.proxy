@@ -120,7 +120,7 @@ namespace Arcus.EventGrid.Proxy.Tests.Integration.Endpoints.v1
             var eventId = AssertHttpHeader(Headers.Response.Events.Id, response);
             var receivedEvent = GetReceivedEvent(eventId);
             Assert.NotNull(receivedEvent);
-            Assert.Equal(expectedTimestamp, receivedEvent.EventTime);
+            Assert.Equal(expectedTimestamp.DateTime, receivedEvent.EventTime);
         }
 
         [Fact]
@@ -148,7 +148,7 @@ namespace Arcus.EventGrid.Proxy.Tests.Integration.Endpoints.v1
         {
             var receivedEvent = GetReceivedEvent(eventId);
             var parsedTime = DateTimeOffset.Parse(eventTimestamp);
-            Assert.Equal(parsedTime.UtcDateTime, receivedEvent.EventTime.ToUniversalTime());
+            Assert.Equal(parsedTime.DateTime, receivedEvent.EventTime);
             Assert.Equal(eventType, receivedEvent.EventType);
             Assert.Equal(eventId, receivedEvent.Id);
             Assert.Equal(eventSubject, receivedEvent.Subject);
