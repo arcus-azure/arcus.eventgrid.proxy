@@ -5,7 +5,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ARCUS_HTTP_PORT=88
-      - ARCUS_EVENTGRID_TOPICENDPOINT=
-      - ARCUS_EVENTGRID_AUTHKEY=
+      - ARCUS_EVENTGRID_TOPICENDPOINT=https://arcus-event-grid-dev-we-integration-tests.westeurope-1.eventgrid.azure.net/api/events
+      - ARCUS_EVENTGRID_AUTHKEY=B7rqeccGOOhhI0arirZNx5fyM/yJ2RZizPsybLZXkMI=
     ports:
       - "42063:88"

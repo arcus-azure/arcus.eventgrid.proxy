@@ -11,10 +11,14 @@ namespace Arcus.EventGrid.Proxy.Api.Extensions
         /// <param name="applicationBuilder">Application Builder</param>
         public static void UseOpenApiDocsWithExplorer(this IApplicationBuilder applicationBuilder)
         {
-            applicationBuilder.UseSwagger();
+            applicationBuilder.UseSwagger(swaggerOptions =>
+            {
+                swaggerOptions.RouteTemplate = "api/{documentName}/docs.json";
+            });
             applicationBuilder.UseSwaggerUI(swaggerUiOptions =>
             {
-                swaggerUiOptions.SwaggerEndpoint("/swagger/v1/swagger.json", "Arcus Event Grid Proxy v1 API");
+                swaggerUiOptions.SwaggerEndpoint("/api/v1/docs.json", "Arcus Event Grid Proxy v1 API");
+                swaggerUiOptions.RoutePrefix = "api/docs";
                 swaggerUiOptions.DisplayOperationId();
                 swaggerUiOptions.EnableDeepLinking();
                 swaggerUiOptions.DocumentTitle = "Arcus Event Grid Proxy API";
