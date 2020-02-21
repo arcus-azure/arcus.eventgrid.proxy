@@ -52,9 +52,9 @@ namespace Arcus.EventGrid.Proxy.Api
             {
                 app.UseDeveloperExceptionPage();
             }
-            
-            app.UseRouting();
+
             app.UseMiddleware<ExceptionHandlingMiddleware>();
+            app.UseRouting();
             app.UseCorrelation();
             app.UseOpenApiDocsWithExplorer();
 
