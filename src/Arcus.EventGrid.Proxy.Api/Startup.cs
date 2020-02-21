@@ -36,6 +36,7 @@ namespace Arcus.EventGrid.Proxy.Api
 
             services.UseOpenApiSpecifications();
             services.AddSingleton(BuildEventGridPublisher);
+            services.AddHealthChecks();
 
             ValidateConfiguration();
         }
