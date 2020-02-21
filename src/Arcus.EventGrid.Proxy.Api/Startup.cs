@@ -40,16 +40,6 @@ namespace Arcus.EventGrid.Proxy.Api
             ValidateConfiguration();
         }
 
-        private void ValidateConfiguration()
-        {
-            var validationOutcomes = RuntimeValidator.Run(Configuration);
-
-            if (validationOutcomes.Any(validationOutcome => validationOutcome.Successful == false))
-            {
-                throw new Exception("Unable to start up due to invalid configuration");
-            }
-        }
-
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -71,6 +61,16 @@ namespace Arcus.EventGrid.Proxy.Api
             return EventGridPublisherBuilder.ForTopic(topicUri)
                 .UsingAuthenticationKey(authenticationKey)
                 .Build();
+        }
+
+        private void ValidateConfiguration()
+        {
+            var validationOutcomes = RuntimeValidator.Run(Configuration);
+
+            if (validationOutcomes.Any(validationOutcome => validationOutcome.Successful == false))
+            {
+                throw new Exception("Unable to start up due to invalid configuration");
+            }
         }
     }
 }
