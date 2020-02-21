@@ -5,6 +5,8 @@ using System.Text.Json.Serialization;
 using Arcus.EventGrid.Proxy.Api.Validation;
 using Arcus.EventGrid.Publishing;
 using Arcus.EventGrid.Publishing.Interfaces;
+using Arcus.WebApi.Correlation;
+using Arcus.WebApi.Logging;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -34,8 +36,10 @@ namespace Arcus.EventGrid.Proxy.Api
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
-            services.UseOpenApiSpecifications();
             services.AddSingleton(BuildEventGridPublisher);
+
+            services.UseOpenApiSpecifications();
+            services.AddCorrelation();
             services.AddHealthChecks();
 
             ValidateConfiguration();
@@ -48,9 +52,12 @@ namespace Arcus.EventGrid.Proxy.Api
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            
             app.UseRouting();
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
+            app.UseCorrelation();
             app.UseOpenApiDocsWithExplorer();
+
             app.UseEndpoints(endpoints => endpoints.MapControllers());
         }
 
