@@ -37,7 +37,12 @@ namespace Arcus.EventGrid.Proxy.Api.Controllers.v1
         {
             HealthReport healthReport = await _healthCheckService.CheckHealthAsync();
 
-            return healthReport?.Status == HealthStatus.Healthy ? Ok(healthReport) : StatusCode(StatusCodes.Status503ServiceUnavailable, healthReport);
+            if (healthReport?.Status == HealthStatus.Healthy)
+            {
+                return Ok(healthReport);
+            }
+
+            return StatusCode(StatusCodes.Status503ServiceUnavailable, healthReport);
         }
     }
 }
