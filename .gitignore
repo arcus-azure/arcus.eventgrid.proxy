@@ -331,4 +331,5 @@ ASALocalRun/
 **/Open-Api-Docs.xml
 /docs/_site
 **/docker-compose.override.yml
+**/appsettings.Development.json
 **/appsettings.local.json
