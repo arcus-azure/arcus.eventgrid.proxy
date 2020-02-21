@@ -328,5 +328,7 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
-/src/Arcus.EventGrid.Sidecar.Api/Open-Api-Docs.xml
+**/Open-Api-Docs.xml
 /docs/_site
+**/docker-compose.override.yml
+**/appsettings.local.json
