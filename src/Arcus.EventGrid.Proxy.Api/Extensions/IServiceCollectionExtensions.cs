@@ -1,8 +1,9 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Swashbuckle.AspNetCore.Swagger;
+using Microsoft.OpenApi.Models;
 
 namespace Arcus.EventGrid.Proxy.Api.Extensions
 {
@@ -14,19 +15,19 @@ namespace Arcus.EventGrid.Proxy.Api.Extensions
         /// <param name="services">Collections of services in application</param>
         public static void UseOpenApiSpecifications(this IServiceCollection services)
         {
-            var openApiInformation = new Info
+            var openApiInformation = new OpenApiInfo
             {
-                Contact = new Contact
+                Contact = new OpenApiContact
                 {
                     Name = "Arcus Event Grid Proxy",
-                    Url = "https://github.com/arcus-azure/arcus.eventgrid.proxy"
+                    Url = new Uri("https://github.com/arcus-azure/arcus.eventgrid.proxy")
                 },
                 Title = "Arcus Event Grid Proxy",
                 Description = "Push events to Azure Event Grid in a breeze - API allows you to send events over REST without having to worry about how Azure Event Grid works.",
-                License = new License
+                License = new OpenApiLicense
                 {
                     Name = "MIT",
-                    Url = "https://github.com/arcus-azure/arcus.eventgrid.proxy/blob/master/LICENSE"
+                    Url = new Uri("https://github.com/arcus-azure/arcus.eventgrid.proxy/blob/master/LICENSE")
                 }
             };
 
@@ -36,7 +37,6 @@ namespace Arcus.EventGrid.Proxy.Api.Extensions
             {
                 swaggerGenerationOptions.EnableAnnotations();
                 swaggerGenerationOptions.SwaggerDoc("v1", openApiInformation);
-                swaggerGenerationOptions.DescribeAllEnumsAsStrings();
 
                 if (string.IsNullOrEmpty(xmlDocumentationPath) == false)
                 {

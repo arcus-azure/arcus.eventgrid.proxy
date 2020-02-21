@@ -1,6 +1,7 @@
 ﻿using Arcus.EventGrid.Proxy.Api.Extensions;
 using System;
 using System.Linq;
+using System.Text.Json.Serialization;
 using Arcus.EventGrid.Proxy.Api.Validation;
 using Arcus.EventGrid.Publishing;
 using Arcus.EventGrid.Publishing.Interfaces;
@@ -9,8 +10,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+using Microsoft.Extensions.Hosting;
 
 namespace Arcus.EventGrid.Proxy.Api
 {
@@ -29,10 +29,10 @@ namespace Arcus.EventGrid.Proxy.Api
             services.AddMvc()
                 .AddJsonOptions(jsonOptions =>
                 {
-                    jsonOptions.SerializerSettings.Converters.Add(new StringEnumConverter());
-                    jsonOptions.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+                    jsonOptions.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                    jsonOptions.JsonSerializerOptions.IgnoreNullValues = true;
                 })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             services.UseOpenApiSpecifications();
             services.AddSingleton(BuildEventGridPublisher);
@@ -51,15 +51,16 @@ namespace Arcus.EventGrid.Proxy.Api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseMvc();
+            app.UseRouting();
             app.UseOpenApiDocsWithExplorer();
+            app.UseEndpoints(endpoints => endpoints.MapControllers());
         }
 
         private IEventGridPublisher BuildEventGridPublisher(IServiceProvider serviceProvider)
