@@ -22,6 +22,8 @@
 
   <ItemGroup>
     <PackageReference Include="Arcus.EventGrid.Publishing" Version="3.0.0-preview-1" />
+    <PackageReference Include="Arcus.WebApi.Correlation" Version="20200209.3.0-preview" />
+    <PackageReference Include="Arcus.WebApi.Logging" Version="0.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
