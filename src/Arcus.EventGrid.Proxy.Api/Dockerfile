@@ -1,7 +1,7 @@
-FROM microsoft/dotnet:2.2-aspnetcore-runtime AS base
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1.2-alpine AS base
 WORKDIR /app
 
-FROM microsoft/dotnet:2.2-sdk AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1.102-alpine AS build
 WORKDIR /src
 COPY ["Arcus.EventGrid.Proxy.Api/Arcus.EventGrid.Proxy.Api.csproj", "Arcus.EventGrid.Proxy.Api/"]
 RUN dotnet restore "Arcus.EventGrid.Proxy.Api/Arcus.EventGrid.Proxy.Api.csproj"
