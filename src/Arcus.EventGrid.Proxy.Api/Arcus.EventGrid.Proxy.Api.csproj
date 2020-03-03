@@ -22,7 +22,7 @@
 
   <ItemGroup>
     <PackageReference Include="Arcus.EventGrid.Publishing" Version="3.0.0-preview-1" />
-    <PackageReference Include="Arcus.WebApi.Correlation" Version="0.4.0-preview-2" />
+    <PackageReference Include="Arcus.WebApi.Correlation" Version="0.4.0" />
     <PackageReference Include="Arcus.WebApi.Logging" Version="0.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
