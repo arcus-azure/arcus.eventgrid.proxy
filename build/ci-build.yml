@@ -20,7 +20,7 @@ variables:
   - group: 'Build Configuration'
   # Always use fixed version for .NET Core SDK
   - name: 'DotNet.Sdk.Version'
-    value: '2.2.105'
+    value: '3.1.102'
   - name: 'Project'
     value: 'Arcus.EventGrid.Proxy'
   - name: 'Arcus_Api_BaseUrl'

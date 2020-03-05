@@ -16,6 +16,12 @@
             <param name="eventTimestamp">Timestamp of the event. Example of preferred format is '2019-01-21T10:25:09.2292418+01:00'</param>
             <param name="dataVersion">Version of the data payload schema</param>
         </member>
+        <member name="M:Arcus.EventGrid.Proxy.Api.Controllers.v1.HealthController.#ctor(Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckService)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Arcus.EventGrid.Proxy.Api.Controllers.v1.HealthController"/> class.
+            </summary>
+            <param name="healthCheckService">The service to provide the health of the API application.</param>
+        </member>
         <member name="M:Arcus.EventGrid.Proxy.Api.Controllers.v1.HealthController.Get">
             <summary>
                 Get Health
