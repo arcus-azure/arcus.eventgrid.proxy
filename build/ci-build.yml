@@ -133,3 +133,9 @@ stages:
               arguments: '--configuration $(Build.Configuration)'
               nobuild: true
               publishTestResults: true
+          - task: PowerShell@2
+            displayName: 'Get Docker container logs'
+            inputs:
+              targetType: 'inline'
+              script: 'docker logs azure-event-grid-proxy:$(Build.BuildId)'
+            condition: failed()
