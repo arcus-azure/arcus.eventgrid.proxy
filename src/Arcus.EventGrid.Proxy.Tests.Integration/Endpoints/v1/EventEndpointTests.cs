@@ -156,10 +156,10 @@ namespace Arcus.EventGrid.Proxy.Tests.Integration.Endpoints.v1
             Assert.Equal(eventDataVersion, receivedEvent.DataVersion);
         }
 
-        private RawEvent GetReceivedEvent(string eventId)
+        private Event GetReceivedEvent(string eventId)
         {
             var receivedEvent = _serviceBusEventConsumerHost.GetReceivedEvent(eventId);
-            var rawEvents = EventGridParser.Parse<RawEvent>(receivedEvent);
+            var rawEvents = EventParser.Parse(receivedEvent);
             Assert.NotNull(rawEvents);
             Assert.NotNull(rawEvents.Events);
             Assert.Single(rawEvents.Events);
