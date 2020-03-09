@@ -137,5 +137,5 @@ stages:
             displayName: 'Get Docker container logs'
             inputs:
               targetType: 'inline'
-              script: 'docker logs azure-event-grid-proxy:$(Build.BuildId)'
+              script: 'docker logs azure-event-grid-proxy'
             condition: failed()

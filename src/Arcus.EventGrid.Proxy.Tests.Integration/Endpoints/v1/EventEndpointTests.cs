@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -47,19 +48,22 @@ namespace Arcus.EventGrid.Proxy.Tests.Integration.Endpoints.v1
             // Arrange
             const string eventType = "Codito.NewCarRegistered";
             var eventPayload = new { LicensePlate = Guid.NewGuid().ToString() };
-            var rawEventPayload = JsonConvert.SerializeObject(eventPayload);
-            var expectedEventPayload = JToken.Parse(rawEventPayload);
+            string rawEventPayload = JsonConvert.SerializeObject(eventPayload);
+            JToken expectedEventPayload = JToken.Parse(rawEventPayload);
 
             // Act
-            var response = await _eventService.EmitAsync(rawEventPayload, eventType);
-
-            // Assert
-            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
-            var eventId = AssertHttpHeader(Headers.Response.Events.Id, response);
-            var eventSubject = AssertHttpHeader(Headers.Response.Events.Subject, response);
-            var eventTimestamp = AssertHttpHeader(Headers.Response.Events.Timestamp, response);
-            var eventDataVersion = AssertHttpHeader(Headers.Response.Events.DataVersion, response);
-            AssertReceivedEvent(eventId, eventType, eventTimestamp, eventSubject, eventDataVersion, expectedEventPayload);
+            using (HttpResponseMessage response = await _eventService.EmitAsync(rawEventPayload, eventType))
+            {
+                // Assert
+                string content = await response.Content.ReadAsStringAsync();
+                Assert.True(HttpStatusCode.NoContent == response.StatusCode, content);
+                
+                string eventId = AssertHttpHeader(Headers.Response.Events.Id, response);
+                string eventSubject = AssertHttpHeader(Headers.Response.Events.Subject, response);
+                string eventTimestamp = AssertHttpHeader(Headers.Response.Events.Timestamp, response);
+                string eventDataVersion = AssertHttpHeader(Headers.Response.Events.DataVersion, response);
+                AssertReceivedEvent(eventId, eventType, eventTimestamp, eventSubject, eventDataVersion, expectedEventPayload);
+            }
         }
 
         [Fact]
@@ -69,17 +73,19 @@ namespace Arcus.EventGrid.Proxy.Tests.Integration.Endpoints.v1
             const string eventType = "Codito.NewCarRegistered";
             var expectedEventId = Guid.NewGuid().ToString();
             var eventPayload = new { LicensePlate = Guid.NewGuid().ToString() };
-            var rawEventPayload = JsonConvert.SerializeObject(eventPayload);
+            string rawEventPayload = JsonConvert.SerializeObject(eventPayload);
 
             // Act
-            var response = await _eventService.EmitAsync(rawEventPayload, eventType, eventId: expectedEventId);
+            using (HttpResponseMessage response = await _eventService.EmitAsync(rawEventPayload, eventType, eventId: expectedEventId))
+            {
+                string content = await response.Content.ReadAsStringAsync();
+                Assert.True(HttpStatusCode.NoContent == response.StatusCode, content);
 
-            // Assert
-            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
-            var eventId = AssertHttpHeader(Headers.Response.Events.Id, response);
-            var receivedEvent = GetReceivedEvent(eventId);
-            Assert.NotNull(receivedEvent);
-            Assert.Equal(expectedEventId, receivedEvent.Id);
+                string eventId = AssertHttpHeader(Headers.Response.Events.Id, response);
+                Event receivedEvent = GetReceivedEvent(eventId);
+                Assert.NotNull(receivedEvent);
+                Assert.Equal(expectedEventId, receivedEvent.Id);
+            }
         }
 
         [Fact]
@@ -88,19 +94,22 @@ namespace Arcus.EventGrid.Proxy.Tests.Integration.Endpoints.v1
             // Arrange
             const string eventType = "Codito.NewCarRegistered";
             var licensePlate = Guid.NewGuid().ToString();
-            var expectedEventSubject = $"/cars/{licensePlate}";
+            string expectedEventSubject = $"/cars/{licensePlate}";
             var eventPayload = new { LicensePlate = licensePlate };
-            var rawEventPayload = JsonConvert.SerializeObject(eventPayload);
+            string rawEventPayload = JsonConvert.SerializeObject(eventPayload);
 
             // Act
-            var response = await _eventService.EmitAsync(rawEventPayload, eventType, eventSubject: expectedEventSubject);
-
-            // Assert
-            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
-            var eventId = AssertHttpHeader(Headers.Response.Events.Id, response);
-            var receivedEvent = GetReceivedEvent(eventId);
-            Assert.NotNull(receivedEvent);
-            Assert.Equal(expectedEventSubject, receivedEvent.Subject);
+            using (HttpResponseMessage response = await _eventService.EmitAsync(rawEventPayload, eventType, eventSubject: expectedEventSubject))
+            {
+                // Assert
+                string content = await response.Content.ReadAsStringAsync();
+                Assert.True(HttpStatusCode.NoContent == response.StatusCode, content);
+            
+                string eventId = AssertHttpHeader(Headers.Response.Events.Id, response);
+                Event receivedEvent = GetReceivedEvent(eventId);
+                Assert.NotNull(receivedEvent);
+                Assert.Equal(expectedEventSubject, receivedEvent.Subject);
+            }
         }
 
         [Fact]
@@ -108,19 +117,22 @@ namespace Arcus.EventGrid.Proxy.Tests.Integration.Endpoints.v1
         {
             // Arrange
             const string eventType = "Codito.NewCarRegistered";
-            var expectedTimestamp = DateTimeOffset.UtcNow;
+            DateTimeOffset expectedTimestamp = DateTimeOffset.UtcNow;
             var eventPayload = new { LicensePlate = Guid.NewGuid().ToString() };
-            var rawEventPayload = JsonConvert.SerializeObject(eventPayload);
+            string rawEventPayload = JsonConvert.SerializeObject(eventPayload);
 
             // Act
-            var response = await _eventService.EmitAsync(rawEventPayload, eventType, eventTimestamp: expectedTimestamp.ToString("O"));
+            using (HttpResponseMessage response = await _eventService.EmitAsync(rawEventPayload, eventType, eventTimestamp: expectedTimestamp.ToString("O")))
+            {
+                // Assert
+                string content = await response.Content.ReadAsStringAsync();
+                Assert.True(HttpStatusCode.NoContent == response.StatusCode, content);
 
-            // Assert
-            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
-            var eventId = AssertHttpHeader(Headers.Response.Events.Id, response);
-            var receivedEvent = GetReceivedEvent(eventId);
-            Assert.NotNull(receivedEvent);
-            Assert.Equal(expectedTimestamp.DateTime, receivedEvent.EventTime);
+                string eventId = AssertHttpHeader(Headers.Response.Events.Id, response);
+                Event receivedEvent = GetReceivedEvent(eventId);
+                Assert.NotNull(receivedEvent);
+                Assert.Equal(expectedTimestamp.DateTime, receivedEvent.EventTime);
+            }
         }
 
         [Fact]
@@ -129,25 +141,28 @@ namespace Arcus.EventGrid.Proxy.Tests.Integration.Endpoints.v1
             // Arrange
             const string eventType = "Codito.NewCarRegistered";
             var licensePlate = Guid.NewGuid().ToString();
-            var expectedDataVersion = "1337";
+            const string expectedDataVersion = "1337";
             var eventPayload = new { LicensePlate = licensePlate };
-            var rawEventPayload = JsonConvert.SerializeObject(eventPayload);
+            string rawEventPayload = JsonConvert.SerializeObject(eventPayload);
 
             // Act
-            var response = await _eventService.EmitAsync(rawEventPayload, eventType, dataVersion: expectedDataVersion);
+            using (HttpResponseMessage response = await _eventService.EmitAsync(rawEventPayload, eventType, dataVersion: expectedDataVersion))
+            {
+                // Assert
+                string content = await response.Content.ReadAsStringAsync();
+                Assert.True(HttpStatusCode.NoContent == response.StatusCode, content);
 
-            // Assert
-            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
-            var eventId = AssertHttpHeader(Headers.Response.Events.Id, response);
-            var receivedEvent = GetReceivedEvent(eventId);
-            Assert.NotNull(receivedEvent);
-            Assert.Equal(expectedDataVersion, receivedEvent.DataVersion);
+                string eventId = AssertHttpHeader(Headers.Response.Events.Id, response);
+                Event receivedEvent = GetReceivedEvent(eventId);
+                Assert.NotNull(receivedEvent);
+                Assert.Equal(expectedDataVersion, receivedEvent.DataVersion);
+            }
         }
 
         private void AssertReceivedEvent(string eventId, string eventType, string eventTimestamp, string eventSubject, string eventDataVersion, JToken expectedEventPayload)
         {
-            var receivedEvent = GetReceivedEvent(eventId);
-            var parsedTime = DateTimeOffset.Parse(eventTimestamp);
+            Event receivedEvent = GetReceivedEvent(eventId);
+            DateTimeOffset parsedTime = DateTimeOffset.Parse(eventTimestamp);
             Assert.Equal(parsedTime.DateTime, receivedEvent.EventTime);
             Assert.Equal(eventType, receivedEvent.EventType);
             Assert.Equal(eventId, receivedEvent.Id);
@@ -158,23 +173,24 @@ namespace Arcus.EventGrid.Proxy.Tests.Integration.Endpoints.v1
 
         private Event GetReceivedEvent(string eventId)
         {
-            var receivedEvent = _serviceBusEventConsumerHost.GetReceivedEvent(eventId);
-            var rawEvents = EventParser.Parse(receivedEvent);
+            string receivedEvent = _serviceBusEventConsumerHost.GetReceivedEvent(eventId);
+            EventBatch<Event> rawEvents = EventParser.Parse(receivedEvent);
             Assert.NotNull(rawEvents);
             Assert.NotNull(rawEvents.Events);
-            Assert.Single(rawEvents.Events);
-            var firstRawEvent = rawEvents.Events.FirstOrDefault();
-            Assert.NotNull(firstRawEvent);
+            
+            Event firstEvent = Assert.Single(rawEvents.Events);
+            Assert.NotNull(firstEvent);
 
-            return firstRawEvent;
+            return firstEvent;
         }
 
-        private string AssertHttpHeader(string headerName, HttpResponseMessage response)
+        private static string AssertHttpHeader(string headerName, HttpResponseMessage response)
         {
-            var isHeaderFound = response.Headers.TryGetValues(headerName, out var headerValues);
-            Assert.True(isHeaderFound);
-            var headerValue = headerValues.Single();
-            Assert.NotEmpty(headerValue);
+            bool isHeaderFound = response.Headers.TryGetValues(headerName, out IEnumerable<string> headerValues);
+            Assert.True(isHeaderFound, $"Cannot find response header '{headerName} in HTTP response'");
+            
+            string headerValue = Assert.Single(headerValues);
+            Assert.False(String.IsNullOrEmpty(headerValue), $"HTTP response header '{headerName}' value is empty");
 
             return headerValue;
         }
