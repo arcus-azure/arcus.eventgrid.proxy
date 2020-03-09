@@ -8,6 +8,7 @@ using CloudNative.CloudEvents;
 using GuardNet;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Arcus.EventGrid.Proxy.Api.Controllers.v1
@@ -40,10 +41,11 @@ namespace Arcus.EventGrid.Proxy.Api.Controllers.v1
         [SwaggerResponse((int) HttpStatusCode.NoContent, Description = "Event was successfully emitted")]
         [SwaggerResponse((int) HttpStatusCode.BadRequest, Description = "The request to emit an event was not valid")]
         [SwaggerResponse((int) HttpStatusCode.InternalServerError, Description = "Unable to emit event due to internal error")]
-        public async Task<IActionResult> Emit(string eventType, [FromBody, Required] string eventPayload, string eventId, string eventTimestamp, string eventSubject = "/", string dataVersion = "1.0")
+        public async Task<IActionResult> Emit(string eventType, [FromBody, Required] object eventPayload, string eventId, string eventTimestamp, string eventSubject = "/", string dataVersion = "1.0")
         {
             eventId = string.IsNullOrWhiteSpace(eventId) ? Guid.NewGuid().ToString() : eventId;
             eventTimestamp = string.IsNullOrWhiteSpace(eventTimestamp) ? DateTimeOffset.UtcNow.ToString(format: "O") : eventTimestamp;
+            JToken rawjsonToken = JToken.FromObject(eventPayload);
 
             if (DateTimeOffset.TryParse(eventTimestamp, out DateTimeOffset parsedEventTimeStamp) == false)
             {
@@ -52,7 +54,7 @@ namespace Arcus.EventGrid.Proxy.Api.Controllers.v1
 
             var source = new Uri($"{Request.Scheme}://{Request.Host}{Request.PathBase}");
             await _eventGridPublisher.PublishRawCloudEventAsync(
-                CloudEventsSpecVersion.V1_0, eventId, eventType, source, eventPayload, eventSubject, parsedEventTimeStamp.DateTime);
+                CloudEventsSpecVersion.V1_0, eventId, eventType, source, rawjsonToken.ToString(Formatting.None), eventSubject, parsedEventTimeStamp.DateTime);
 
             Response.Headers.Add(Headers.Response.Events.Id, eventId);
             Response.Headers.Add(Headers.Response.Events.Subject, eventSubject);
