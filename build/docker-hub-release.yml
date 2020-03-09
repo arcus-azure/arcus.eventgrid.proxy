@@ -13,6 +13,7 @@ resources:
 variables:
   - name: 'Image.Name'
     value: 'arcusazure/arcus-event-grid-proxy-ignore'
+  - template: ./variables/build.yml
   # variable 'Image.Version' is set as queue-time variable in azure devops.
   # variable 'Image.MajorMinorVersion' is set during the first powershell step 'Determine'{major}.{minor} version'
 
@@ -36,7 +37,7 @@ stages:
           - task: PowerShell@2
             inputs:
               targetType: 'inline'
-              script: 'docker build . --file Arcus.EventGrid.Proxy.Api/Dockerfile --tag $(Image.Name):$(Build.BuildId) --tag $(Image.Name):$(Image.MajorMinorVersion) --tag $(Image.Name):latest'
+              script: 'docker build . --file $(Project).Api/Dockerfile --tag $(Image.Name):$(Build.BuildId) --tag $(Image.Name):$(Image.MajorMinorVersion) --tag $(Image.Name):latest'
               workingDirectory: 'src'
             displayName: 'Build Docker image'
           - template: github/create-release.yml@templates

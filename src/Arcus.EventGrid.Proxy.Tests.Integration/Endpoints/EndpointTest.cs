@@ -11,6 +11,7 @@ namespace Arcus.EventGrid.Proxy.Tests.Integration.Endpoints
             Configuration = new ConfigurationBuilder()
                 .AddJsonFile(path: "appsettings.json", optional: true)
                 .AddJsonFile(path: "appsettings.local.json", optional: true)
+                .AddJsonFile(path: "appsettings.private.json", optional: true)
                 .AddEnvironmentVariables()
                 .Build();
         }

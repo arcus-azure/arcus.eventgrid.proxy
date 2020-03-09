@@ -1,11 +1,14 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
+using System.Net.Mime;
 using System.Threading.Tasks;
 using Arcus.EventGrid.Publishing.Interfaces;
+using CloudNative.CloudEvents;
 using GuardNet;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Arcus.EventGrid.Proxy.Api.Controllers.v1
@@ -43,14 +46,14 @@ namespace Arcus.EventGrid.Proxy.Api.Controllers.v1
             eventId = string.IsNullOrWhiteSpace(eventId) ? Guid.NewGuid().ToString() : eventId;
             eventTimestamp = string.IsNullOrWhiteSpace(eventTimestamp) ? DateTimeOffset.UtcNow.ToString(format: "O") : eventTimestamp;
 
-            var rawEventPayload = JsonConvert.SerializeObject(eventPayload);
-
-            if (DateTimeOffset.TryParse(eventTimestamp, out var parsedEventTimeStamp) == false)
+            if (DateTimeOffset.TryParse(eventTimestamp, out DateTimeOffset parsedEventTimeStamp) == false)
             {
                 return BadRequest($"Unable to parse specified event timestamp '{eventTimestamp}'");
             }
 
-            await _eventGridPublisher.PublishRawAsync(eventId, eventType, rawEventPayload, eventSubject, dataVersion, parsedEventTimeStamp);
+            var source = new Uri($"{Request.Scheme}://{Request.Host}{Request.PathBase}");
+            await _eventGridPublisher.PublishRawCloudEventAsync(
+                CloudEventsSpecVersion.V1_0, eventId, eventType, source, eventPayload.ToString(), eventSubject, parsedEventTimeStamp.DateTime);
 
             Response.Headers.Add(Headers.Response.Events.Id, eventId);
             Response.Headers.Add(Headers.Response.Events.Subject, eventSubject);

@@ -14,15 +14,18 @@ pr:
     - src/*
     - build/ci-build.yml
 
+resources:
+  repositories:
+    - repository: templates
+      type: github
+      name: arcus-azure/azure-devops-templates
+      endpoint: arcus-azure
+
 variables:
   - group: 'Arcus Event Grid - Integration Testing'
   - group: 'Arcus - GitHub Package Registry'
   - group: 'Build Configuration'
-  # Always use fixed version for .NET Core SDK
-  - name: 'DotNet.Sdk.Version'
-    value: '3.1.102'
-  - name: 'Project'
-    value: 'Arcus.EventGrid.Proxy'
+  - template: ./variables/build.yml
   - name: 'Arcus_Api_BaseUrl'
     value: 'http://localhost:888/api/v1'
 
@@ -72,14 +75,10 @@ stages:
             displayName: 'Import .NET Core SDK ($(DotNet.Sdk.Version))'
             inputs:
               version: '$(DotNet.Sdk.Version)'
-          - task: DotNetCoreCLI@2
-            displayName: 'Run unit tests'
-            inputs:
-              command: test
-              projects: 'src/**/$(Project).Tests.Unit.csproj'
-              arguments: '--configuration $(Build.Configuration)'
-              nobuild: true
-              publishTestResults: true
+          - template: test/run-unit-tests.yml@templates
+            parameters:
+              dotnetSdkVersion: '$(DotNet.Sdk.Version)'
+              projectName: '$(Project).Tests.Unit'
 
   - stage: IntegrationTests
     displayName: Integration Tests
@@ -96,17 +95,6 @@ stages:
             inputs:
               artifact: 'Build'
               path: '$(Build.SourcesDirectory)'
-          - task: qetza.replacetokens.replacetokens-task.replacetokens@3
-            displayName: 'Replace integration test tokens'
-            inputs:
-              rootDirectory: 'src/$(Project).Tests.Integration/'
-              targetFiles: 'appsettings.json'
-              encoding: 'auto'
-              writeBOM: true
-              actionOnMissing: 'fail'
-              keepToken: false
-              tokenPrefix: '#{'
-              tokenSuffix: '}#'
           - task: DotNetCoreInstaller@0
             displayName: 'Import .NET Core SDK ($(DotNet.Sdk.Version))'
             inputs:
@@ -129,11 +117,14 @@ stages:
                 ARCUS_HTTP_PORT=888
                 ARCUS_EVENTGRID_TOPICENDPOINT=$(Arcus_EventGrid_TopicEndpoint)
                 ARCUS_EVENTGRID_AUTHKEY=$(Arcus_EventGrid_EndpointKey)
-          - task: DotNetCoreCLI@2
-            displayName: 'Run integration tests'
+          - template: test/run-integration-tests.yml@templates
+            parameters:
+              dotnetSdkVersion: '$(DotNet.Sdk.Version)'
+              projectName: '$(Project).Tests.Integration'
+              category: 'Docker'
+          - task: PowerShell@2
+            displayName: 'Get Docker container logs'
             inputs:
-              command: test
-              projects: 'src/**/$(Project).Tests.Integration.csproj'
-              arguments: '--configuration $(Build.Configuration)'
-              nobuild: true
-              publishTestResults: true
+              targetType: 'inline'
+              script: 'docker logs azure-event-grid-proxy'
+            condition: failed()
