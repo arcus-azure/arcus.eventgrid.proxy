@@ -45,7 +45,6 @@ namespace Arcus.EventGrid.Proxy.Api.Controllers.v1
         {
             eventId = string.IsNullOrWhiteSpace(eventId) ? Guid.NewGuid().ToString() : eventId;
             eventTimestamp = string.IsNullOrWhiteSpace(eventTimestamp) ? DateTimeOffset.UtcNow.ToString(format: "O") : eventTimestamp;
-            JToken rawjsonToken = JToken.FromObject(eventPayload);
 
             if (DateTimeOffset.TryParse(eventTimestamp, out DateTimeOffset parsedEventTimeStamp) == false)
             {
@@ -54,7 +53,7 @@ namespace Arcus.EventGrid.Proxy.Api.Controllers.v1
 
             var source = new Uri($"{Request.Scheme}://{Request.Host}{Request.PathBase}");
             await _eventGridPublisher.PublishRawCloudEventAsync(
-                CloudEventsSpecVersion.V1_0, eventId, eventType, source, rawjsonToken.ToString(Formatting.None), eventSubject, parsedEventTimeStamp.DateTime);
+                CloudEventsSpecVersion.V1_0, eventId, eventType, source, eventPayload.ToString(), eventSubject, parsedEventTimeStamp.DateTime);
 
             Response.Headers.Add(Headers.Response.Events.Id, eventId);
             Response.Headers.Add(Headers.Response.Events.Subject, eventSubject);

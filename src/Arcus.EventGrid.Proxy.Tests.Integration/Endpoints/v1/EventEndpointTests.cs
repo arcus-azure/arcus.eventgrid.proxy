@@ -73,7 +73,7 @@ namespace Arcus.EventGrid.Proxy.Tests.Integration.Endpoints.v1
             Assert.Equal(eventType, receivedEvent.EventType);
             Assert.Equal(eventId, receivedEvent.Id);
             Assert.Equal(eventSubject, receivedEvent.Subject);
-            Assert.Equal(expectedEventPayload, JToken.FromObject(receivedEvent.Data));
+            Assert.Equal(expectedEventPayload.ToString(Formatting.None), receivedEvent.Data);
         }
 
         [Fact]
