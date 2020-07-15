@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1.5-alpine AS base
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1.6-alpine AS base
 WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1.302-alpine AS build
