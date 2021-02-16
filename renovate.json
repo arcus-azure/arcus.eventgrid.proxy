@@ -9,7 +9,7 @@
   "extends": [
     "config:base",
     "default:pinDigestsDisabled",
-    "default: disablePrControls"
+    "default:disablePrControls"
   ],
   "nuget": {
     "enabled": true
