@@ -24,7 +24,7 @@ Docker image will be available on [Docker Hub](https://hub.docker.com/r/arcusazu
 
 # Features
 - Push events to Azure Event Grid via REST ([docs](features/push-events))
-- Monitor runtime with a health endpoint ([docs](operations/health))
+- Monitor runtime with a health endpoint ([docs](features/health))
 
 # Documentation
 - **Concepts**
