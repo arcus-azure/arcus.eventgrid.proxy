@@ -4,8 +4,6 @@ layout: default
 permalink: /
 slug: /
 sidebar_label: Welcome
-redirect_from:
- - /index.html
 ---
 
 **Arcus Event Grid Proxy** is a container that makes it easier to integrate with Azure Event Grid.
