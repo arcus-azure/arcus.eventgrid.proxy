@@ -1,7 +1,9 @@
 ---
-title: "Home"
+title: "Arcus Event Grid Proxy"
 layout: default
 permalink: /
+slug: /
+sidebar_label: Welcome
 redirect_from:
  - /index.html
 ---

@@ -23,5 +23,3 @@ Content-Length: 0
 ```
 
 This feature allows you to determine if the container is successfully started up or if it's still healthy. It easily integrates with [Kubernetes' liveness & readiness probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/).
-
-[&larr; back](/)

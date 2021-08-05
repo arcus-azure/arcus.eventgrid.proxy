@@ -15,5 +15,3 @@ Proxy currently supports pushing events to only one Azure Event Grid topic.
 The topic to push to must be configured with the following environment variables:
 - `ARCUS_EVENTGRID_TOPICENDPOINT` - Url of the topic to push to
 - `ARCUS_EVENTGRID_AUTHKEY` -  Authentication key to authenticate with
-
-[&larr; back](/)
