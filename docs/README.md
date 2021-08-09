@@ -9,7 +9,6 @@ This documentation assumes that you run all scripts within the docs folder.
 cd docs
 ```
 
-
 ## Installation
 
 ```console
@@ -42,45 +41,6 @@ When tagging a new version, the document versioning mechanism will:
 - Copy the full `./preview` folder contents into a new `versioned_docs/version-<version>/` folder.
 - Create a versioned sidebars file based from your current sidebar configuration (if it exists) - saved as `versioned_sidebars/version-<version>-sidebars.json`.
 - Append the new version number to `versions.json`.
-
-## Configuration
-
-https://docusaurus.io/docs/configuration
-
-When creating a new documentation website update these values within the `docusaurus.config.js` file:
-
-```typescript
-{
-  title,
-  url,
-  projectName,
-  themeConfig: {
-    navbar: {
-      title: 'Background Jobs',
-        items: [
-        {
-          href: 'https://github.com/arcus-azure/arcus.backgroundjobs',
-          label: 'GitHub',
-        }
-      ]
-    },
-    footer: {
-      copyright:  `Copyright © ${new Date().getFullYear()} Arcus Background Jobs maintained by arcus-azure`,
-    }
-  },
-    presets: [
-    [
-      '@docusaurus/preset-classic',
-      {
-        docs: {
-          editUrl:
-            'https://github.com/arcus-azure/arcus.backgroundjobs/edit/master',
-        },
-      },
-    ],
-    ]
-}
-```
 
 ## Syntax higlighting
 
