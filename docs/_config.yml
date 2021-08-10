@@ -1,7 +1,0 @@
-repository: arcus-azure/arcus.eventgrid.proxy
-theme: jekyll-theme-slate
-logo: https://raw.githubusercontent.com/arcus-azure/arcus/master/media/arcus.png
-title: Arcus Event Grid Proxy
-description: Proxy for sending events to Azure Event Grid
-plugins:
-  - jemoji

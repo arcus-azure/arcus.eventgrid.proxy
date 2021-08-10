@@ -29,5 +29,3 @@ You can specify more information with the following query parameters:
 - `eventTimestamp` - Timestamp of event _(default: UTC)_
 - `eventSubject` - Subject of event _(default: /)_
 - `dataVersion` - Version of data payload _(default: 1.0)_
-
-[&larr; back](/)

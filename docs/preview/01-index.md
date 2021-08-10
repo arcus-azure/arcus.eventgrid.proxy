@@ -1,9 +1,9 @@
 ---
-title: "Home"
+title: "Arcus Event Grid Proxy"
 layout: default
 permalink: /
-redirect_from:
- - /index.html
+slug: /
+sidebar_label: Welcome
 ---
 
 **Arcus Event Grid Proxy** is a container that makes it easier to integrate with Azure Event Grid.
@@ -22,7 +22,7 @@ Docker image will be available on [Docker Hub](https://hub.docker.com/r/arcusazu
 
 # Features
 - Push events to Azure Event Grid via REST ([docs](features/push-events))
-- Monitor runtime with a health endpoint ([docs](operations/health))
+- Monitor runtime with a health endpoint ([docs](features/health))
 
 # Documentation
 - **Concepts**
