@@ -12,7 +12,6 @@ module.exports = {
   organizationName: 'arcus-azure', // Usually your GitHub org/user name.
   projectName: 'Arcus - Event Grid Proxy', // Usually your repo name.
   themeConfig: {
-    sidebarCollapsible: false,
     image: 'img/arcus.jpg',
     navbar: {
       title: 'Event Grid Proxy',
@@ -63,7 +62,7 @@ module.exports = {
     prism: {
       theme: lightCodeTheme,
       darkTheme: darkCodeTheme,
-      additionalLanguages: ['csharp'],
+      additionalLanguages: ['csharp', 'powershell'],
     },
   },
   presets: [
@@ -74,9 +73,10 @@ module.exports = {
           sidebarPath: require.resolve('./sidebars.js'),
           routeBasePath: "/",
           path: 'preview',
+          sidebarCollapsible: false,
           // Please change this to your repo.
           editUrl:
-            'https://github.com/arcus-azure/arcus.eventgrid.proxy/edit/master',
+            'https://github.com/arcus-azure/arcus.eventgrid.proxy/edit/master/docs',
           // includeCurrentVersion:process.env.CONTEXT !== 'production',
 
         },
