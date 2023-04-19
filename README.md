@@ -4,7 +4,7 @@
 [![Docker Pulls](https://img.shields.io/docker/pulls/arcusazure/arcus-event-grid-proxy.svg?style=flat-square)](https://hub.docker.com/r/arcusazure/arcus-event-grid-proxy/) 
 [![Docker Stars](https://img.shields.io/docker/stars/arcusazure/arcus-event-grid-proxy.svg?style=flat-square)](https://hub.docker.com/r/arcusazure/arcus-event-grid-proxy/)
 
-
+# ⚠️ Deprecated: this GitHub repository is no longer actively maintained.
 
 Proxy for sending events to Azure Event Grid.
 
